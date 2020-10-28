@@ -2,7 +2,7 @@ const { everySeries } = require('async');
 var Case = require('../models/case');
 
 exports.index = function(req, res) {
-  res.send('NOT IMPLEMENTED: Home Page');
+  res.render('index', { title: 'PC Parts Inventory' });
 }
 
 //Display list of all cases.
