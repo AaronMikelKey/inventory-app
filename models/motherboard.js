@@ -7,7 +7,7 @@ var MotherboardSchema = new Schema(
     manufacturer: {type: String, required: true, maxlength: 100},
     formFactor: {type: String,
        required: true,
-        enum: ['ATX','Micro ATX', 'Mini ATX', 'HTPX'] },
+        enum: ['ATX','Micro ATX', 'Mini ITX', 'HTPX'] },
     memory: {type: String, required: true, enum: ['DDR2', 'DDR3', 'DDR4']},
     price: {type: Number, required: true, min: 0},
     amount: {type: Number, required: true, min: 0}

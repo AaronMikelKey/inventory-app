@@ -8,6 +8,7 @@ var PeripheralSchema = new Schema(
     type: {type: String,
        required: true,
         enum: ['Monitor','Keyboard', 'Mouse', 'Headphones', 'Speakers'] },
+    description: {type: String, maxlength: 200},
     price: {type: Number, required: true, min: 0},
     amount: {type: Number, required: true, min: 0}
   }

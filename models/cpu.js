@@ -37,7 +37,7 @@ CpuSchema
 CpuSchema
 .path('coreClock')
 .get(function(num) {
-  return (num / 10).toFixed(1);
+  return ((num / 10).toFixed(1) + ' GHz');
 });
 
 //Setter for coreClock

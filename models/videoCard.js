@@ -7,7 +7,7 @@ var VideoCardSchema = new Schema(
     manufacturer: {type: String, required: true, maxlength: 100},
     memory: {type: String,
        required: true,
-        enum: ['1GB','2GB', '3GB', '4GB', '5GB', '6GB', '8GB', '16GB'] },
+        enum: ['1GB','2GB', '3GB', '4GB', '5GB', '6GB', '8GB', '10GB', '16GB'] },
     chipset: {type: String, required: true, maxlength: 50},
     price: {type: Number, required: true, min: 0},
     amount: {type: Number, required: true, min: 0}
