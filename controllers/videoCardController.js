@@ -1,8 +1,13 @@
-var videoCard = require('../models/videoCard');
+var VideoCard = require('../models/videoCard');
 
 //Display list of all videoCards.
-exports.videoCard_list = function(req, res) {
-  res.send('NOT IMPLEMENTED: videoCard list');
+exports.videoCard_list = function(req, res, next) {
+  VideoCard.find({}, 'name  manufacturer memory chipset price amount')
+  .exec(function (err, list_videoCards) {
+    if (err) { return next(err); }
+    //else (success)
+    res.render('videoCard_list', { title: 'Video Cards', videoCard_list: list_videoCards });
+  });
 };
 
 // Display detail page for a specific videoCard.

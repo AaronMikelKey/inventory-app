@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  div.container
+    section(class='hero is-dark is-primary') 
+      div.hero-body
+        div.container
+          h1.title.has-text-black #{title}
+
+    ul.inv-list
+      - powerSupply_list.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+      each powerSupply in powerSupply_list
+        li
+          div.card.mx-5.my-2.px-5.py-2.has-background-primary
+            a(href=powerSupply.url) #[strong #{powerSupply.manufacturer} #{powerSupply.name}]
+            p #[strong Wattage:] #{powerSupply.wattage}
+            p #[strong Modular?] #{powerSupply.modular} 
+            p #[strong Color:] #{powerSupply.color}
+            p #[strong Price:] $#{powerSupply.price}
+            p #[strong In Stock:] #{powerSupply.amount}
+      else
+        li There are no Power Supplys.

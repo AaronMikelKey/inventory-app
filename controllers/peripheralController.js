@@ -1,8 +1,13 @@
 var Peripheral = require('../models/peripheral');
 
 //Display list of all peripherals.
-exports.peripheral_list = function(req, res) {
-  res.send('NOT IMPLEMENTED: peripheral list');
+exports.peripheral_list = function(req, res, next) {
+  Peripheral.find({}, 'name manufacturer type description price amount')
+  .exec(function (err, list_peripherals) {
+    if (err) { return next(err); }
+    //else (success)
+    res.render('peripheral_list', { title: 'Peripherals', peripheral_list: list_peripherals });
+  });
 };
 
 // Display detail page for a specific peripheral.

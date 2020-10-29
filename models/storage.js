@@ -25,7 +25,7 @@ StorageSchema
 StorageSchema
 .path('price')
 .get(function(num) {
-  return (num / 100).toFixed(2);
+  return (num / 10000).toFixed(2);
 });
 
 //Setter for price

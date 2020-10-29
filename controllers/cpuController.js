@@ -1,8 +1,13 @@
 var Cpu = require('../models/cpu');
 
 //Display list of all cpus.
-exports.cpu_list = function(req, res) {
-  res.send('NOT IMPLEMENTED: cpu list');
+exports.cpu_list = function(req, res, next) {
+  Cpu.find({}, 'name manufacturer coreCount coreClock price amount')
+  .exec(function (err, list_cpus) {
+    if (err) { return next(err); }
+    //else (success)
+    res.render('cpu_list', { title: 'CPUs', cpu_list: list_cpus });
+  });
 };
 
 // Display detail page for a specific cpu.

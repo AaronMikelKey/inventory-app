@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  div.container
+    section(class='hero is-dark is-primary') 
+      div.hero-body
+        div.container
+          h1.title.has-text-black #{title}
+
+    ul.inv-list
+      - videoCard_list.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+      each videoCard in videoCard_list
+        li
+          div.card.mx-5.my-2.px-5.py-2.has-background-primary
+            a(href=videoCard.url) #[strong #{videoCard.manufacturer} #{videoCard.name}]
+            p #[strong Chipset:] #{videoCard.chipset} 
+            p #[strong Memory:] #{videoCard.memory}
+            p #[strong Price:] $#{videoCard.price}
+            p #[strong In Stock:] #{videoCard.amount}
+      else
+        li There are no videoCards.

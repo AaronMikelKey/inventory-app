@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  div.container
+    section(class='hero is-dark is-primary') 
+      div.hero-body
+        div.container
+          h1.title.has-text-black #{title}
+
+    ul.inv-list
+      - memory_list.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+      each memory in memory_list
+        li
+          div.card.mx-5.my-2.px-5.py-2.has-background-primary
+            a(href=memory.url) #[strong #{memory.manufacturer} #{memory.name}]
+            p #[strong Type:] #{memory.type} 
+            p #[strong Size:] #{memory.size}
+            p #[strong Color:] #{memory.color}
+            p #[strong Price:] $#{memory.price}
+            p #[strong In stock:] #{memory.amount}
+      else
+        li There are no memorys.

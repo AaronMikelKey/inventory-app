@@ -1,0 +1,88 @@
+extends layout
+
+block content
+  div.container
+    section(class='hero is-primary') 
+      div.hero-body
+        div.container
+          h1.title.has-text-black #{title}
+
+    div.banner
+      h1.title.has-text-black Monitors
+      ul.inv-list
+        - peripheral_list.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+        each peripheral in peripheral_list
+          if peripheral.type === 'Monitor'
+            li
+              div.card.mx-5.my-2.px-5.py-2.has-background-primary
+                a(href=peripheral.url) #[strong #{peripheral.manufacturer} #{peripheral.name}]
+                p #[strong Type:] #{peripheral.type} 
+                p #[strong Description:] #{peripheral.description}
+                p #[strong Price:] $#{peripheral.price}
+                p #[strong In Stock:] #{peripheral.amount}
+        else
+          li There are no Monitors.
+    hr
+    div.banner
+      h1.title.has-text-black Keyboards
+      ul.inv-list
+        - peripheral_list.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+        each peripheral in peripheral_list
+          if peripheral.type === 'Keyboard'
+            li
+              div.card.mx-5.my-2.px-5.py-2.has-background-primary
+                a(href=peripheral.url) #[strong #{peripheral.manufacturer} #{peripheral.name}]
+                p #[strong Type:] #{peripheral.type} 
+                p #[strong Description:] #{peripheral.description}
+                p #[strong Price:] $#{peripheral.price}
+                p #[strong In Stock:] #{peripheral.amount}
+        else
+          li There are no keyboards.
+    hr
+    div.banner
+      h1.title.has-text-black Mice
+      ul.inv-list
+        - peripheral_list.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+        each peripheral in peripheral_list
+          if peripheral.type === 'Mouse'
+            li
+              div.card.mx-5.my-2.px-5.py-2.has-background-primary
+                a(href=peripheral.url) #[strong #{peripheral.manufacturer} #{peripheral.name}]
+                p #[strong Type:] #{peripheral.type} 
+                p #[strong Description:] #{peripheral.description}
+                p #[strong Price:] $#{peripheral.price}
+                p #[strong In Stock:] #{peripheral.amount}
+        else
+          li There are no mice.
+    hr
+    div.banner
+      h1.title.has-text-black Headphones
+      ul.inv-list
+        - peripheral_list.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+        each peripheral in peripheral_list
+          if peripheral.type === 'Headphones'
+            li
+              div.card.mx-5.my-2.px-5.py-2.has-background-primary
+                a(href=peripheral.url) #[strong #{peripheral.manufacturer} #{peripheral.name}]
+                p #[strong Type:] #{peripheral.type} 
+                p #[strong Description:] #{peripheral.description}
+                p #[strong Price:] $#{peripheral.price}
+                p #[strong In Stock:] #{peripheral.amount}
+        else
+          li There are no headphones.
+    hr
+    div.banner
+      h1.title.has-text-black Speakers
+      ul.inv-list
+        - peripheral_list.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+        each peripheral in peripheral_list
+          if peripheral.type === 'Speakers'
+            li
+              div.card.mx-5.my-2.px-5.py-2.has-background-primary
+                a(href=peripheral.url) #[strong #{peripheral.manufacturer} #{peripheral.name}]
+                p #[strong Type:] #{peripheral.type} 
+                p #[strong Description:] #{peripheral.description}
+                p #[strong Price:] $#{peripheral.price}
+                p #[strong In Stock:] #{peripheral.amount}
+        else
+          li There are no speakers.

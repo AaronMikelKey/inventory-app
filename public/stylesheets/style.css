@@ -29,3 +29,8 @@ a:hover {
 .card {
   width: 250px;
 }
+
+.banner {
+  width: 100%;
+  text-align: center;
+}

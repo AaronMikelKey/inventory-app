@@ -1,8 +1,13 @@
 var Storage = require('../models/storage');
 
 //Display list of all storages.
-exports.storage_list = function(req, res) {
-  res.send('NOT IMPLEMENTED: storage list');
+exports.storage_list = function(req, res, next) {
+  Storage.find({}, 'name manufacturer type price amount')
+  .exec(function (err, list_storages) {
+    if (err) { return next(err); }
+    //else (success)
+    res.render('storage_list', { title: 'Storage', storage_list: list_storages });
+  });
 };
 
 // Display detail page for a specific storage.

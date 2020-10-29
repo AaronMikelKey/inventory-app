@@ -1,8 +1,13 @@
-var powerSupply = require('../models/powerSupply');
+var PowerSupply = require('../models/powerSupply');
 
 //Display list of all powerSupplys.
-exports.powerSupply_list = function(req, res) {
-  res.send('NOT IMPLEMENTED: powerSupply list');
+exports.powerSupply_list = function(req, res, next) {
+  PowerSupply.find({}, 'name manufacturer modular color wattage price amount')
+  .exec(function (err, list_powerSupplys) {
+    if (err) { return next(err); }
+    //else (success)
+    res.render('powerSupply_list', { title: 'Power Supplys', powerSupply_list: list_powerSupplys });
+  });
 };
 
 // Display detail page for a specific powerSupply.

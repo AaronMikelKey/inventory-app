@@ -1,8 +1,13 @@
 var Motherboard = require('../models/motherboard');
 
 //Display list of all motherboards.
-exports.motherboard_list = function(req, res) {
-  res.send('NOT IMPLEMENTED: motherboard list');
+exports.motherboard_list = function(req, res, next) {
+  Motherboard.find({}, 'name manufacturer formFactor memory color price amount')
+  .exec(function (err, list_motherboards) {
+    if (err) { return next(err); }
+    //else (success)
+    res.render('motherboard_list', { title: 'Motherboards', motherboard_list: list_motherboards });
+  });
 };
 
 // Display detail page for a specific motherboard.

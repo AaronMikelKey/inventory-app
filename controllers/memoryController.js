@@ -1,8 +1,13 @@
 var Memory = require('../models/memory');
 
 //Display list of all memorys.
-exports.memory_list = function(req, res) {
-  res.send('NOT IMPLEMENTED: memory list');
+exports.memory_list = function(req, res, next) {
+  Memory.find({}, 'name manufacturer type size color price amount')
+  .exec(function (err, list_memorys) {
+    if (err) { return next(err); }
+    //else (success)
+    res.render('memory_list', { title: 'Memory', memory_list: list_memorys });
+  });
 };
 
 // Display detail page for a specific memory.
