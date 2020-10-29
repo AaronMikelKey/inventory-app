@@ -2,7 +2,11 @@ const { everySeries } = require('async');
 var Case = require('../models/case');
 
 exports.index = function(req, res) {
-  res.render('index', { title: 'PC Parts Inventory' });
+  res.render('index', { 
+    title: 'PC Parts Inventory',
+    component_list: 
+      { cases:'Case', cpus: 'CPU', memorys: 'Memory', motherboards:'Motherboard', peripherals:'Peripheral', powersupplys: 'Power Supply', storages: 'Storage', videocards:'Video Card'},
+    });
 }
 
 //Display list of all cases.

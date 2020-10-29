@@ -5,16 +5,18 @@ html(lang='en')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     title= title
     link(rel='stylesheet' type='text/css' href='https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='./stylesheets/style.css')
   body
-    nav.navbar.is-primary(role='navigation' aria-label='main navigation')
-      a.navbar-burger.burger(role='button' aria-label='menu' aria-expanded='false')
-        span(aria-hidden='true')
-        span(aria-hidden='true')
-        span(aria-hidden='true')
-    div.navbar-menu
-      div.navbar-start
-        a.navbar-item(href='/') Home
-        a.navbar-item(href='/catalog/cases') Cases
-        a.navbar-item(href='/catalog/cpus') CPUs
+    aside
+      p.menu-label General
+        ul.menu-list
+          li
+            a(href='/') Home
+      p.menu-label Parts
+        ul.menu-list
+          each key, val in component_list
+            li
+              a(href='/catalog/' + val) #{key}
     block content
+    // Everything in content needs to be wrapped in a 
+      container div for the sidebar to work.
