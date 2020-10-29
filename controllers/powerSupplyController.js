@@ -11,8 +11,19 @@ exports.powerSupply_list = function(req, res, next) {
 };
 
 // Display detail page for a specific powerSupply.
-exports.powerSupply_detail = function(req, res) {
-  res.send('NOT IMPLEMENTED: powerSupply detail: ' + req.params.id);
+exports.powerSupply_detail = function(req, res, next) {
+
+  PowerSupply.findById(req.params.id, function(err, results) {
+  if (err) { return next(err); }
+  if (results==null) { // No results.
+      var err = new Error('powerSupply not found');
+      err.status = 404;
+      return next(err);
+  }
+  // Successful, so render
+  res.render('powerSupply_detail', { title: results.manufacturer + ' ' + results.name, powerSupply: results } );
+});
+
 };
 
 // Display powerSupply create form on GET.

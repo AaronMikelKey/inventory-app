@@ -11,8 +11,19 @@ exports.storage_list = function(req, res, next) {
 };
 
 // Display detail page for a specific storage.
-exports.storage_detail = function(req, res) {
-  res.send('NOT IMPLEMENTED: storage detail: ' + req.params.id);
+exports.storage_detail = function(req, res, next) {
+
+  Storage.findById(req.params.id, function(err, results) {
+  if (err) { return next(err); }
+  if (results==null) { // No results.
+      var err = new Error('storage not found');
+      err.status = 404;
+      return next(err);
+  }
+  // Successful, so render
+  res.render('storage_detail', { title: results.manufacturer + ' ' + results.name, storage: results } );
+});
+
 };
 
 // Display storage create form on GET.

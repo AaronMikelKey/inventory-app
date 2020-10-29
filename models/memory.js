@@ -21,7 +21,7 @@ var MemorySchema = new Schema(
 MemorySchema
 .virtual('url')
 .get(function () {
-  return 'catalog/memory/' + this._id;
+  return 'memory/' + this._id;
 });
 
 //Getter for price, which is stored in cents

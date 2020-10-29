@@ -1,4 +1,4 @@
-const { everySeries } = require('async');
+const { async } = require('async');
 var Case = require('../models/case');
 var _component_list = { cases:'Case', cpus: 'CPU', memorys: 'Memory', motherboards:'Motherboard', peripherals:'Peripheral', powersupplys: 'Power Supply', storages: 'Storage', videocards:'Video Card'};
 
@@ -22,8 +22,19 @@ exports.case_list = function(req, res, next) {
 };
 
 // Display detail page for a specific case.
-exports.case_detail = function(req, res) {
-  res.send('NOT IMPLEMENTED: case detail: ' + req.params.id);
+exports.case_detail = function(req, res, next) {
+
+      Case.findById(req.params.id, function(err, results) {
+      if (err) { return next(err); }
+      if (results==null) { // No results.
+          var err = new Error('Case not found');
+          err.status = 404;
+          return next(err);
+      }
+      // Successful, so render
+      res.render('case_detail', { title: results.manufacturer + ' ' + results.name, caseName: results } );
+  });
+
 };
 
 // Display case create form on GET.

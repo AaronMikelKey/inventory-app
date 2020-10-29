@@ -11,8 +11,19 @@ exports.peripheral_list = function(req, res, next) {
 };
 
 // Display detail page for a specific peripheral.
-exports.peripheral_detail = function(req, res) {
-  res.send('NOT IMPLEMENTED: peripheral detail: ' + req.params.id);
+exports.peripheral_detail = function(req, res, next) {
+
+  Peripheral.findById(req.params.id, function(err, results) {
+  if (err) { return next(err); }
+  if (results==null) { // No results.
+      var err = new Error('peripheral not found');
+      err.status = 404;
+      return next(err);
+  }
+  // Successful, so render
+  res.render('peripheral_detail', { title: results.manufacturer + ' ' + results.name, peripheral: results } );
+});
+
 };
 
 // Display peripheral create form on GET.

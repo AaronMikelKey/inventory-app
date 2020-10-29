@@ -11,8 +11,19 @@ exports.videoCard_list = function(req, res, next) {
 };
 
 // Display detail page for a specific videoCard.
-exports.videoCard_detail = function(req, res) {
-  res.send('NOT IMPLEMENTED: videoCard detail: ' + req.params.id);
+exports.videoCard_detail = function(req, res, next) {
+
+  VideoCard.findById(req.params.id, function(err, results) {
+  if (err) { return next(err); }
+  if (results==null) { // No results.
+      var err = new Error('videoCard not found');
+      err.status = 404;
+      return next(err);
+  }
+  // Successful, so render
+  res.render('videoCard_detail', { title: results.manufacturer + ' ' + results.name, videoCard: results } );
+});
+
 };
 
 // Display videoCard create form on GET.

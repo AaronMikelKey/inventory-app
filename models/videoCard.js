@@ -18,7 +18,7 @@ var VideoCardSchema = new Schema(
 VideoCardSchema
 .virtual('url')
 .get(function () {
-  return 'catalog/videocard/' + this._id;
+  return 'videocard/' + this._id;
 });
 
 //Getter for price, which is stored in cents

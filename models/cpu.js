@@ -16,7 +16,7 @@ var CpuSchema = new Schema(
 CpuSchema
 .virtual('url')
 .get(function () {
-  return 'catalog/cpu/' + this._id;
+  return 'cpu/' + this._id;
 });
 
 //Getter for price, which is stored in cents

@@ -18,7 +18,7 @@ var PeripheralSchema = new Schema(
 PeripheralSchema
 .virtual('url')
 .get(function () {
-  return 'catalog/peripheral/' + this._id;
+  return 'peripheral/' + this._id;
 });
 
 //Getter for price, which is stored in cents

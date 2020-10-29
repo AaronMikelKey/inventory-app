@@ -11,8 +11,19 @@ exports.motherboard_list = function(req, res, next) {
 };
 
 // Display detail page for a specific motherboard.
-exports.motherboard_detail = function(req, res) {
-  res.send('NOT IMPLEMENTED: motherboard detail: ' + req.params.id);
+exports.motherboard_detail = function(req, res, next) {
+
+  Motherboard.findById(req.params.id, function(err, results) {
+  if (err) { return next(err); }
+  if (results==null) { // No results.
+      var err = new Error('motherboard not found');
+      err.status = 404;
+      return next(err);
+  }
+  // Successful, so render
+  res.render('motherboard_detail', { title: results.manufacturer + ' ' + results.name, motherboard: results } );
+});
+
 };
 
 // Display motherboard create form on GET.

@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  div.container
+    section(class='hero is-dark is-primary') 
+      div.hero-body
+        div.container
+          h1.title.has-text-black #{title}
+
+    div.card.bigCard.my-2.px-5.py-2.has-background-primary
+      p #[strong Wattage:] #{powerSupply.wattage}
+      p #[strong Modular?] #{powerSupply.modular} 
+      p #[strong Color:] #{powerSupply.color}
+      p #[strong Price:] $#{powerSupply.price}
+      p #[strong In Stock:] #{powerSupply.amount}

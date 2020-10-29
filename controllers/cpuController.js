@@ -11,8 +11,19 @@ exports.cpu_list = function(req, res, next) {
 };
 
 // Display detail page for a specific cpu.
-exports.cpu_detail = function(req, res) {
-  res.send('NOT IMPLEMENTED: cpu detail: ' + req.params.id);
+exports.cpu_detail = function(req, res, next) {
+
+    Cpu.findById(req.params.id, function(err, results) {
+    if (err) { return next(err); }
+    if (results==null) { // No results.
+        var err = new Error('Cpu not found');
+        err.status = 404;
+        return next(err);
+    }
+    // Successful, so render
+    res.render('cpu_detail', { title: results.manufacturer + ' ' + results.name, cpu: results } );
+  });
+
 };
 
 // Display cpu create form on GET.

@@ -19,7 +19,7 @@ var PowerSupplySchema = new Schema(
 PowerSupplySchema
 .virtual('url')
 .get(function () {
-  return 'catalog/powersupply/' + this._id;
+  return 'powersupply/' + this._id;
 });
 
 //Getter for price, which is stored in cents

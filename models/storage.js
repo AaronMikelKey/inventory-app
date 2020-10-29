@@ -18,7 +18,7 @@ var StorageSchema = new Schema(
 StorageSchema
 .virtual('url')
 .get(function () {
-  return 'catalog/storage/' + this._id;
+  return 'storage/' + this._id;
 });
 
 //Getter for price, which is stored in cents

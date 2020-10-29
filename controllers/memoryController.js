@@ -11,8 +11,19 @@ exports.memory_list = function(req, res, next) {
 };
 
 // Display detail page for a specific memory.
-exports.memory_detail = function(req, res) {
-  res.send('NOT IMPLEMENTED: memory detail: ' + req.params.id);
+exports.memory_detail = function(req, res, next) {
+
+  Memory.findById(req.params.id, function(err, results) {
+  if (err) { return next(err); }
+  if (results==null) { // No results.
+      var err = new Error('memory not found');
+      err.status = 404;
+      return next(err);
+  }
+  // Successful, so render
+  res.render('memory_detail', { title: results.manufacturer + ' ' + results.name, memory: results } );
+});
+
 };
 
 // Display memory create form on GET.

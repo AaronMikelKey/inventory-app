@@ -18,7 +18,7 @@ var MotherboardSchema = new Schema(
 MotherboardSchema
 .virtual('url')
 .get(function () {
-  return 'catalog/motherboard/' + this._id;
+  return 'motherboard/' + this._id;
 });
 
 //Getter for price, which is stored in cents

@@ -18,7 +18,7 @@ var CaseSchema = new Schema(
 CaseSchema
 .virtual('url')
 .get(function () {
-  return 'catalog/case/' + this._id;
+  return 'case/' + this._id;
 });
 
 //Getter for price, which is stored in cents
