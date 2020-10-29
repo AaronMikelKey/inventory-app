@@ -1,17 +1,24 @@
 const { everySeries } = require('async');
 var Case = require('../models/case');
+var _component_list = { cases:'Case', cpus: 'CPU', memorys: 'Memory', motherboards:'Motherboard', peripherals:'Peripheral', powersupplys: 'Power Supply', storages: 'Storage', videocards:'Video Card'};
+
 
 exports.index = function(req, res) {
   res.render('index', { 
     title: 'PC Parts Inventory',
     component_list: 
-      { cases:'Case', cpus: 'CPU', memorys: 'Memory', motherboards:'Motherboard', peripherals:'Peripheral', powersupplys: 'Power Supply', storages: 'Storage', videocards:'Video Card'},
+      _component_list,
     });
 }
 
 //Display list of all cases.
-exports.case_list = function(req, res) {
-  res.send('NOT IMPLEMENTED: Case list');
+exports.case_list = function(req, res, next) {
+  Case.find({}, 'name manufacturer type color price amount')
+  .exec(function (err, list_cases) {
+    if (err) { return next(err); }
+    //else (success)
+    res.render('case_list', { title: 'Cases', case_list: list_cases });
+  });
 };
 
 // Display detail page for a specific case.

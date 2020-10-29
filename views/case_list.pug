@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  div.container
+    section(class='hero is-dark is-primary') 
+      div.hero-body
+        div.container
+          h1.title.has-text-black #{title}
+
+    ul.inv-list
+      - case_list.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+      each caseName in case_list
+        li
+          div.card.mx-5.my-2.px-5.py-2.has-background-primary
+            a(href=caseName.url) #[strong #{caseName.manufacturer} #{caseName.name}]
+            p #[strong #{caseName.type}]
+            p #[strong Price:] $ #{caseName.price} 
+            p #[strong Color:] #{caseName.color}
+            p #[strong In Stock:] #{caseName.amount}
+      else
+        li There are no cases.

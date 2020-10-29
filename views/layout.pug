@@ -5,7 +5,7 @@ html(lang='en')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     title= title
     link(rel='stylesheet' type='text/css' href='https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css')
-    link(rel='stylesheet', href='./stylesheets/style.css')
+    link(rel='stylesheet', href='../stylesheets/style.css')
   body
     aside
       p.menu-label General
@@ -14,9 +14,23 @@ html(lang='en')
             a(href='/') Home
       p.menu-label Parts
         ul.menu-list
-          each key, val in component_list
-            li
-              a(href='/catalog/' + val) #{key}
+          li
+            a(href='/catalog/cases') Case
+          li
+            a(href='/catalog/cpus') CPU
+          li
+            a(href='/catalog/memorys') Memory
+          li
+            a(href='/catalog/motherboards') Motherboard
+          li
+            a(href='/catalog/peripherals') Peripherals
+          li
+            a(href='/catalog/powersupplys') Power Supply
+          li
+            a(href='/catalog/storages') Storage
+          li
+            a(href='/catalog/videocards') Video Card
+
     block content
     // Everything in content needs to be wrapped in a 
       container div for the sidebar to work.
