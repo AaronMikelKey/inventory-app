@@ -13,6 +13,7 @@ block content
         li
           div.card.mx-5.my-2.px-5.py-2.has-background-primary
             a(href=storage.url) #[strong #{storage.manufacturer} #{storage.name}]
+            p #[strong Capacity:] #{storage.capacity}
             p #[strong Type:] #{storage.type} 
             p #[strong Price:] $#{storage.price}
             p #[strong In Stock:] #{storage.amount}

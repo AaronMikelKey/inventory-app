@@ -23,7 +23,7 @@ CpuSchema
 CpuSchema
 .path('price')
 .get(function(num) {
-  return (num / 10000).toFixed(2);
+  return (num / 100).toFixed(2);
 });
 
 //Setter for price
@@ -37,7 +37,7 @@ CpuSchema
 CpuSchema
 .path('coreClock')
 .get(function(num) {
-  return ((num / 100).toFixed(1) + ' GHz');
+  return ((num / 10).toFixed(1) + ' GHz');
 });
 
 //Setter for coreClock

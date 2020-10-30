@@ -2,7 +2,7 @@ var Storage = require('../models/storage');
 
 //Display list of all storages.
 exports.storage_list = function(req, res, next) {
-  Storage.find({}, 'name manufacturer type price amount')
+  Storage.find({}, 'name manufacturer capacity type price amount')
   .exec(function (err, list_storages) {
     if (err) { return next(err); }
     //else (success)

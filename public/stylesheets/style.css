@@ -2,6 +2,10 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+pre {
+  margin-left: 130px;
+}
+
 aside {
   border: 1px solid black;
   height: 100%;
