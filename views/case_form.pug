@@ -6,39 +6,41 @@ block content
       div.hero-body
         div.container
           h1.title.has-text-black #{title}
-
-    form(method='POST' action='')
-      div
-        label(for='name') Name:
-        input#name(type='text' placeholder='Case Name' name='name' required='true' value=(undefined===newCase ? '' : newCase.name))
-      div
-        label(for='manufacturer') Manufacturer:
-        input#manufacturer(type='text' placeholder='Manufacturer' name='manufacturer' required='true' value=(undefined===newCase ? '' : newCase.manufacturer))
-      div
-        label(for='type') Type:
-        select#type(type='select' placeholder='Select Type' name='type' required='true')
-          - types.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
-          for item in types
-            if newCase
-              option(value=newCase._id selected=(newCase._id.toString()===newCase._id.toString() ? 'selected' : false)) #{newCase.type}
-            else
-              option(value=item) #{item}
-      div
-        label(for='color') Color:
-        select#color(type='select' placeholder='Select Color' name='color' required='true')
-          - colors.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
-          for item in colors
-            if newCase
-              option(value=newCase._id selected=(newCase._id.toString()===newCase._id.toString() ? 'selected' : false)) #{newCase.color}
-            else
-              option(value=item) #{item}
-      div
-        label(for='price') Price:
-        input(type='number', name='price' placeholder='0.00' required='true' value=(undefined===newCase ? '' : newCase.price))
-      div
-        label(for='amount') Amount:
-        input(type='number', name='amount' placeholder='1' required='true' value=(undefined===newCase ? '' : newCase.amount))
-      button(type='submit') Submit
+    div.field
+      form(method='POST' action='')
+        label.label(for='name') Name:
+        div.control
+          input.input#name(type='text' placeholder='Case Name' name='name' required='true' value=(undefined===newCase ? '' : newCase.name))
+        label.label(for='manufacturer') Manufacturer:
+        div.control
+          input.input#manufacturer(type='text' placeholder='Manufacturer' name='manufacturer' required='true' value=(undefined===newCase ? '' : newCase.manufacturer))
+        label.label(for='type') Type:
+        div.control
+          div.select
+            select#type(type='select' placeholder='Select Type' name='type' required='true')
+              - types.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+              for item in types
+                if newCase
+                  option(value=newCase._id selected=(newCase._id.toString()===newCase._id.toString() ? 'selected' : false)) #{newCase.type}
+                else
+                  option(value=item) #{item}
+        label.label(for='color') Color:
+          div.control
+            div.select
+              select#color(type='select' placeholder='Select Color' name='color' required='true')
+                - colors.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+                for item in colors
+                  if newCase
+                    option(value=newCase._id selected=(newCase._id.toString()===newCase._id.toString() ? 'selected' : false)) #{newCase.color}
+                  else
+                    option(value=item) #{item}
+        label.label(for='price') Price:
+        div.control
+          input.input(type='number', name='price' placeholder='0.00' step='0.01' required='true' value=(undefined===newCase ? '' : newCase.price))
+        label.label(for='amount') Amount:
+        div.control
+          input.input(type='number', name='amount' placeholder='1' required='true' value=(undefined===newCase ? '' : newCase.amount))
+        button.button.is-link(type='submit') Submit
     
     if errors
       ul

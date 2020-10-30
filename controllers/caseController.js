@@ -2,6 +2,8 @@ const { async } = require('async');
 var Case = require('../models/case');
 var _component_list = { cases:'Case', cpus: 'CPU', memorys: 'Memory', motherboards:'Motherboard', peripherals:'Peripheral', powersupplys: 'Power Supply', storages: 'Storage', videocards:'Video Card'};
 const { body,validationResult } = require('express-validator');
+const type = ['ATX Full Tower','ATX Mid Tower', 'ATX Mini Tower', 'HTPC', 'Mini ATX Desktop'];
+const color = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple', 'Black', 'White'];
 
 exports.index = function(req, res) {
   res.render('index', { 
@@ -39,8 +41,6 @@ exports.case_detail = function(req, res, next) {
 
 // Display case create form on GET.
 exports.case_create_get = function(req, res, next) {
-  let type = ['ATX Full Tower','ATX Mid Tower', 'ATX Mini Tower', 'HTPC', 'Mini ATX Desktop'];
-  let color = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple', 'Black', 'White'];
   res.render('case_form', { title: 'Add Case to inventory', types: type, colors: color });
 };
 
@@ -74,14 +74,14 @@ exports.case_create_post = [
 
     if (!errors.isEmpty()) {
       //Errors. Re-render form with sanitized values/errors
-      res.render('case_form', {title: 'Add Case to inventory', newCase: newCase, types: Case.type, colors: Case.color, errors: errors.array() });
+      res.render('case_form', {title: 'Add Case to inventory', newCase: newCase, types: type, colors: color, errors: errors.array() });
     }
     else {
       //Data from form is valid, save Case
       newCase.save(function (err) {
         if (err) { return next(err); }
         //Success, render new case
-        res.redirect(newCase.url);
+        res.redirect('/catalog/case/' +newCase._id);
       });
     }
   }

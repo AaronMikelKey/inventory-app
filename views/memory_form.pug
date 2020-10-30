@@ -1,0 +1,58 @@
+extends layout
+
+block content
+  div.container
+    section(class='hero is-dark is-primary') 
+      div.hero-body
+        div.container
+          h1.title.has-text-black #{title}
+    div.field
+      form(method='POST' action='')
+        label.label(for='name') Name:
+        div.control
+          input.input#name(type='text' placeholder='Memory Name' name='name' required='true' value=(undefined===newMemory ? '' : newMemory.name))
+        label.label(for='manufacturer') Manufacturer:
+        div.control
+          input.input#manufacturer(type='text' placeholder='Manufacturer' name='manufacturer' required='true' value=(undefined===newMemory ? '' : newMemory.manufacturer))
+        label.label(for='type') Type:
+        div.control
+          div.select
+            select#type(type='select' placeholder='Select Type' name='type' required='true')
+              - types.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+              for item in types
+                if newMemory
+                  option(value=newMemory._id selected=(newMemory._id.toString()===newMemory._id.toString() ? 'selected' : false)) #{newMemory.type}
+                else
+                  option(value=item) #{item}
+        label.label(for='size') Size (GB)
+        div.control
+          div.select
+            select#size(type='select' placeholder='Select Size' name='size' required='true')
+              - sizes.sort(function(a, b) {let textA = parseInt(a.replace('GB', '')); let textB = parseInt(b.replace('GB', '')); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+              for item in sizes
+                if newMemory
+                  option(value=newMemory._id selected=(newMemory._id.toString()===newMemory._id.toString() ? 'selected' : false)) #{newMemory.color}
+                else
+                  option(value=item) #{item}
+        label.label(for='color') Color:
+          div.control
+            div.select
+              select#color(type='select' placeholder='Select Color' name='color' required='true')
+                - colors.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+                for item in colors
+                  if newMemory
+                    option(value=newMemory._id selected=(newMemory._id.toString()===newMemory._id.toString() ? 'selected' : false)) #{newMemory.color}
+                  else
+                    option(value=item) #{item}
+        label.label(for='price') Price:
+        div.control
+          input.input(type='number', name='price' placeholder='0.00' step='0.01' required='true' value=(undefined===newMemory ? '' : newMemory.price))
+        label.label(for='amount') Amount:
+        div.control
+          input.input(type='number', name='amount' placeholder='1' required='true' value=(undefined===newMemory ? '' : newMemory.amount))
+        button.button.is-link(type='submit') Submit
+    
+    if errors
+      ul
+        for error in errors
+          li!=error.msg

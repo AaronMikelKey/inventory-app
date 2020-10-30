@@ -44,3 +44,13 @@ a:hover {
   height: 80%;
   text-align: center;
 }
+
+.field {
+  padding: 20px;
+  width: 70%;
+  margin: auto;
+}
+
+.control {
+  margin-bottom: 1rem;
+}

@@ -1,4 +1,8 @@
 var Memory = require('../models/memory');
+const { body,validationResult } = require('express-validator');
+const type = ['DDR2', 'DDR3', 'DDR4'];
+const color = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple', 'Black', 'White'];
+const size = ['1GB','2GB', '4GB', '8GB', '16GB', '32GB'];
 
 //Display list of all memorys.
 exports.memory_list = function(req, res, next) {
@@ -28,13 +32,53 @@ exports.memory_detail = function(req, res, next) {
 
 // Display memory create form on GET.
 exports.memory_create_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: memory create GET');
+  res.render('memory_form', { title: 'Add Memory to inventory', types: type, colors: color, sizes: size });
 };
 
 // Handle memory create on POST.
-exports.memory_create_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: memory create POST');
-};
+exports.memory_create_post = [
+
+  //Validate and sanitize fields
+  body('name', 'Name is required').trim().isLength({ min: 1 }).escape(),
+  body('manufacturer', 'Manufacturer is required').trim().isLength({ min: 1 }).escape(),
+  body('type.*', 'Type is required').isLength({ min: 1 }).escape(),
+  body('size', 'Size is required').isLength({ min: 1 }).escape(),
+  body('color.*', 'Color is required').isLength({ min: 1 }).escape(),
+  body('price', 'Price is required').isDecimal({decimal_digits: '2'}).escape(),
+  body('amount', 'Amount is required').isInt({ min: 1 }).escape(),
+
+  //Process request after validation and sanitization
+  (req, res, next) => {
+
+    //Extract errors
+    const errors = validationResult(req);
+
+    //Create a Memory object with escaped and trimmed data
+    var newMemory = new Memory(
+      {
+        name: req.body.name,
+        manufacturer: req.body.manufacturer,
+        type: req.body.type,
+        size: req.body.size,
+        color: req.body.color,
+        price: req.body.price,
+        amount: req.body.amount
+      });
+
+    if (!errors.isEmpty()) {
+      //Errors. Re-render form with sanitized values/errors
+      res.render('memory_form', {title: 'Add Memory to inventory', newMemory: newMemory, types: type, sizes: size, colors: color, errors: errors.array() });
+    }
+    else {
+      //Data from form is valid, save Memory
+      newMemory.save(function (err) {
+        if (err) { return next(err); }
+        //Success, render new memory
+        res.redirect('/catalog/memory/' +newMemory._id);
+      });
+    }
+  }
+];
 
 // Display memory delete form on GET.
 exports.memory_delete_get = function(req, res) {
