@@ -1,0 +1,48 @@
+extends layout
+
+block content
+  div.container
+    section(class='hero is-dark is-primary') 
+      div.hero-body
+        div.container
+          h1.title.has-text-black #{title}
+    div.field
+      form(method='POST' action='')
+        label.label(for='name') Name:
+        div.control
+          input.input#name(type='text' placeholder='Motherboard Name' name='name' required='true' value=(undefined===newMotherboard ? '' : newMotherboard.name))
+        label.label(for='manufacturer') Manufacturer:
+        div.control
+          input.input#manufacturer(type='text' placeholder='Manufacturer' name='manufacturer' required='true' value=(undefined===newMotherboard ? '' : newMotherboard.manufacturer))
+        label.label(for='formFactor') Form Factor:
+        div.control
+          div.select
+            select#formFactor(type='select' placeholder='Select Form Factor' name='formFactor' required='true')
+              - formFactors.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+              for item in formFactors
+                if newMotherboard
+                  option(value=newMotherboard._id selected=(newMotherboard._id.toString()===newMotherboard._id.toString() ? 'selected' : false)) #{newMotherboard.formFactor}
+                else
+                  option(value=item) #{item}
+        label.label(for='memory') Memory Type
+        div.control
+          div.select
+            select#memory(type='select' placeholder='Select Memory' name='memory' required='true')
+              - memorys.sort(function(a, b) {let textA = parseInt(a.replace('GB', '')); let textB = parseInt(b.replace('GB', '')); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+              for item in memorys
+                if newMotherboard
+                  option(value=newMotherboard._id selected=(newMotherboard._id.toString()===newMotherboard._id.toString() ? 'selected' : false)) #{newMotherboard.color}
+                else
+                  option(value=item) #{item}
+        label.label(for='price') Price:
+        div.control
+          input.input(type='number', name='price' placeholder='0.00' step='0.01' required='true' value=(undefined===newMotherboard ? '' : newMotherboard.price))
+        label.label(for='amount') Amount:
+        div.control
+          input.input(type='number', name='amount' placeholder='1' required='true' value=(undefined===newMotherboard ? '' : newMotherboard.amount))
+        button.button.is-link(type='submit') Submit
+    
+    if errors
+      ul
+        for error in errors
+          li!=error.msg

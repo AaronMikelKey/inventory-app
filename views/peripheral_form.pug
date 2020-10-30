@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  div.container
+    section(class='hero is-dark is-primary') 
+      div.hero-body
+        div.container
+          h1.title.has-text-black #{title}
+    div.field
+      form(method='POST' action='')
+        label.label(for='name') Name:
+        div.control
+          input.input#name(type='text' placeholder='Peripheral Name' name='name' required='true' value=(undefined===newPeripheral ? '' : newPeripheral.name))
+        label.label(for='manufacturer') Manufacturer:
+        div.control
+          input.input#manufacturer(type='text' placeholder='Manufacturer' name='manufacturer' required='true' value=(undefined===newPeripheral ? '' : newPeripheral.manufacturer))
+        label.label(for='type') Type:
+        div.control
+          div.select
+            select#type(type='select' placeholder='Select Type' name='type' required='true')
+              - types.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+              for item in types
+                if newPeripheral
+                  option(value=newPeripheral._id selected=(newPeripheral._id.toString()===newPeripheral._id.toString() ? 'selected' : false)) #{newPeripheral.type}
+                else
+                  option(value=item) #{item}
+        label.label(for='memory') Description
+        div.control
+          input#description.textarea(placeholder='Description of item. i.e. Width, headphone type, mouse DPI, keyboard keys ect.' name='description' value=(undefined===newPeripheral ? '' : newPeripheral.description))
+        label.label(for='price') Price:
+        div.control
+          input.input(type='number', name='price' placeholder='0.00' step='0.01' required='true' value=(undefined===newPeripheral ? '' : newPeripheral.price))
+        label.label(for='amount') Amount:
+        div.control
+          input.input(type='number', name='amount' placeholder='1' required='true' value=(undefined===newPeripheral ? '' : newPeripheral.amount))
+        button.button.is-link(type='submit') Submit
+    
+    if errors
+      ul
+        for error in errors
+          li!=error.msg

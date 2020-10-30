@@ -1,4 +1,7 @@
 var Motherboard = require('../models/motherboard');
+const { body,validationResult } = require('express-validator');
+const formFactor = ['ATX','Micro ATX', 'Mini ITX', 'HTPX'];
+const memory = ['DDR2', 'DDR3', 'DDR4'];
 
 //Display list of all motherboards.
 exports.motherboard_list = function(req, res, next) {
@@ -28,13 +31,51 @@ exports.motherboard_detail = function(req, res, next) {
 
 // Display motherboard create form on GET.
 exports.motherboard_create_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: motherboard create GET');
+  res.render('motherboard_form', { title: 'Add new Motherboard', formFactors: formFactor, memorys: memory });
 };
 
 // Handle motherboard create on POST.
-exports.motherboard_create_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: motherboard create POST');
-};
+exports.motherboard_create_post = [
+
+  //Validate and sanitize fields
+  body('name', 'Name is required').trim().isLength({ min: 1 }).escape(),
+  body('manufacturer', 'Manufacturer is required').trim().isLength({ min: 1 }).escape(),
+  body('formFactor.*', 'Form factor is required').isLength({ min: 1 }).escape(),
+  body('memory.*', 'Memory type is required').isLength({ min: 1 }).escape(),
+  body('price', 'Price is required').isDecimal({decimal_digits: '2'}).escape(),
+  body('amount', 'Amount is required').isInt({ min: 1 }).escape(),
+
+  //Process request after validation and sanitization
+  (req, res, next) => {
+
+    //Extract errors
+    const errors = validationResult(req);
+
+    //Create a Motherboard object with escaped and trimmed data
+    var newMotherboard = new Motherboard(
+      {
+        name: req.body.name,
+        manufacturer: req.body.manufacturer,
+        formFactor: req.body.formFactor,
+        memory: req.body.memory,
+        price: req.body.price,
+        amount: req.body.amount
+      });
+
+    if (!errors.isEmpty()) {
+      //Errors. Re-render form with sanitized values/errors
+      res.render('motherboard_form', {title: 'Add new Motherboard', newMemory: newMemory, formFactors: formFactor, memorys: memory, errors: errors.array() });
+    }
+    else {
+      //Data from form is valid, save Motherboard
+      newMotherboard.save(function (err) {
+        if (err) { return next(err); }
+        //Success, render new motherboard
+        res.redirect('/catalog/motherboard/' +newMotherboard._id);
+      });
+    }
+  }
+];
 
 // Display motherboard delete form on GET.
 exports.motherboard_delete_get = function(req, res) {

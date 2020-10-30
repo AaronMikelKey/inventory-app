@@ -1,0 +1,51 @@
+extends layout
+
+block content
+  div.container
+    section(class='hero is-dark is-primary') 
+      div.hero-body
+        div.container
+          h1.title.has-text-black #{title}
+    div.field
+      form(method='POST' action='')
+        label.label(for='name') Name:
+        div.control
+          input.input#name(type='text' placeholder='Power Supply Name' name='name' required='true' value=(undefined===newPowerSupply ? '' : newPowerSupply.name))
+        label.label(for='manufacturer') Manufacturer:
+        div.control
+          input.input#manufacturer(type='text' placeholder='Manufacturer' name='manufacturer' required='true' value=(undefined===newPowerSupply ? '' : newPowerSupply.manufacturer))
+        label.label(for='price') Wattage:
+        div.control
+          input.input(type='number', name='wattage' placeholder='100' step='10' required='true' value=(undefined===newPowerSupply ? '' : newPowerSupply.wattage))
+        label.label(for='type') Color:
+        div.control
+          div.select
+            select#color(type='select' placeholder='Select Color' name='color' required='true')
+              - colors.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+              for item in colors
+                if newPowerSupply
+                  option(value=newPowerSupply._id selected=(newPowerSupply._id.toString()===newPowerSupply._id.toString() ? 'selected' : false)) #{newPowerSupply.color}
+                else
+                  option(value=item) #{item}
+        label.label(for='type') Color:
+        div.control
+          div.select
+            select#modular(type='select' placeholder='Modular' name='modular' required='true')
+              - modulars.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+              for item in modulars
+                if newPowerSupply
+                  option(value=newPowerSupply._id selected=(newPowerSupply._id.toString()===newPowerSupply._id.toString() ? 'selected' : false)) #{newPowerSupply.modular}
+                else
+                  option(value=item) #{item}
+        label.label(for='price') Price:
+        div.control
+          input.input(type='number', name='price' placeholder='0.00' step='0.01' required='true' value=(undefined===newPowerSupply ? '' : newPowerSupply.price))
+        label.label(for='amount') Amount:
+        div.control
+          input.input(type='number', name='amount' placeholder='1' required='true' value=(undefined===newPowerSupply ? '' : newPowerSupply.amount))
+        button.button.is-link(type='submit') Submit
+    
+    if errors
+      ul
+        for error in errors
+          li!=error.msg
