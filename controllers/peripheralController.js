@@ -77,13 +77,28 @@ exports.peripheral_create_post = [
 ];
 
 // Display peripheral delete form on GET.
-exports.peripheral_delete_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: peripheral delete GET');
+exports.peripheral_delete_get = function(req, res, next) {
+
+  Peripheral.findById(req.params.id, function(err, results) {
+    if (err) { return next(err); }
+    if (results==null) { // No results.
+        res.redirect('/catalog/peripherals');
+    }
+      // Successful, so render.
+      res.render('peripheral_delete', { title: 'Delete Peripheral', peripheral: results } );
+  });
+
 };
 
 // Handle peripheral delete on POST.
-exports.peripheral_delete_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: peripheral delete POST');
+exports.peripheral_delete_post = function(req, res, next) {
+
+  //Delete object and redirect to the list of peripherals.
+  Peripheral.findByIdAndRemove(req.body.peripheralid, function deletePeripheral(err) {
+      if (err) { return next(err); }
+      // Success - go to peripheral list
+      res.redirect('/catalog/peripherals')
+  })
 };
 
 // Display peripheral update form on GET.

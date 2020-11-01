@@ -12,3 +12,6 @@ block content
       p #[strong Memory:] #{motherboard.memory}
       p #[strong Price:] $#{motherboard.price}
       p #[strong In Stock:] #{motherboard.amount}
+    
+    button.button.is-danger.mr-5
+      a.has-text-light(href='/catalog/'+motherboard.url+'/delete') Delete Motherboard

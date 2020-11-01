@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  div.container
+    section(class='hero is-dark is-danger') 
+      div.hero-body
+        div.container
+          h1.title.has-text-black Do you really want to delete this storage from inventory list?
+          br
+          h3.subtitle.has-text-black There is currently #[strong #{storage.amount}] in stock.
+
+    div.card.bigCard.my-2.px-5.py-2.has-background-danger
+      p #[strong #{storage.manufacturer} #{storage.name}]
+      p #[strong #{storage.type}]
+      p #[strong Price:] $ #{storage.price} 
+      p #[strong Color:] #{storage.color}
+      p #[strong In Stock:] #{storage.amount}
+    
+    form(method='POST' action='')
+      div.form-group
+        input#storageid.form-control(type='hidden',name='storageid', required='true', value=storage._id )
+
+      button.button.is-danger(type='submit') Delete

@@ -78,13 +78,28 @@ exports.motherboard_create_post = [
 ];
 
 // Display motherboard delete form on GET.
-exports.motherboard_delete_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: motherboard delete GET');
+exports.motherboard_delete_get = function(req, res, next) {
+
+  Motherboard.findById(req.params.id, function(err, results) {
+    if (err) { return next(err); }
+    if (results==null) { // No results.
+        res.redirect('/catalog/motherboards');
+    }
+      // Successful, so render.
+      res.render('motherboard_delete', { title: 'Delete Motherboard', motherboard: results } );
+  });
+
 };
 
 // Handle motherboard delete on POST.
-exports.motherboard_delete_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: motherboard delete POST');
+exports.motherboard_delete_post = function(req, res, next) {
+
+  //Delete object and redirect to the list of motherboards.
+  Motherboard.findByIdAndRemove(req.body.motherboardid, function deleteMotherboard(err) {
+      if (err) { return next(err); }
+      // Success - go to motherboard list
+      res.redirect('/catalog/motherboards')
+  })
 };
 
 // Display motherboard update form on GET.

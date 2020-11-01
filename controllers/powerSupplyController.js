@@ -80,13 +80,28 @@ exports.powerSupply_create_post = [
 ];
 
 // Display powerSupply delete form on GET.
-exports.powerSupply_delete_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: powerSupply delete GET');
+exports.powerSupply_delete_get = function(req, res, next) {
+
+  PowerSupply.findById(req.params.id, function(err, results) {
+    if (err) { return next(err); }
+    if (results==null) { // No results.
+        res.redirect('/catalog/powerSupplys');
+    }
+      // Successful, so render.
+      res.render('powerSupply_delete', { title: 'Delete Power Supply', powerSupply: results } );
+  });
+
 };
 
 // Handle powerSupply delete on POST.
-exports.powerSupply_delete_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: powerSupply delete POST');
+exports.powerSupply_delete_post = function(req, res, next) {
+
+  //Delete object and redirect to the list of powerSupplys.
+  PowerSupply.findByIdAndRemove(req.body.powerSupplyid, function deletePowerSupply(err) {
+      if (err) { return next(err); }
+      // Success - go to powerSupply list
+      res.redirect('/catalog/powerSupplys')
+  })
 };
 
 // Display powerSupply update form on GET.

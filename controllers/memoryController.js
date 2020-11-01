@@ -81,13 +81,28 @@ exports.memory_create_post = [
 ];
 
 // Display memory delete form on GET.
-exports.memory_delete_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: memory delete GET');
+exports.memory_delete_get = function(req, res, next) {
+
+  Memory.findById(req.params.id, function(err, results) {
+    if (err) { return next(err); }
+    if (results==null) { // No results.
+        res.redirect('/catalog/memorys');
+    }
+      // Successful, so render.
+      res.render('memory_delete', { title: 'Delete Memory', memory: results } );
+  });
+
 };
 
 // Handle memory delete on POST.
-exports.memory_delete_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: memory delete POST');
+exports.memory_delete_post = function(req, res, next) {
+
+  //Delete object and redirect to the list of memorys.
+  Memory.findByIdAndRemove(req.body.memoryid, function deleteMemory(err) {
+      if (err) { return next(err); }
+      // Success - go to memory list
+      res.redirect('/catalog/memorys')
+  })
 };
 
 // Display memory update form on GET.

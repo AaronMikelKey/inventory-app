@@ -13,3 +13,6 @@ block content
       p #[strong Color:] #{powerSupply.color}
       p #[strong Price:] $#{powerSupply.price}
       p #[strong In Stock:] #{powerSupply.amount}
+    
+    button.button.is-danger.mr-5
+      a.has-text-light(href='/catalog/'+powerSupply.url+'/delete') Delete Power Supply

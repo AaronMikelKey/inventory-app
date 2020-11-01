@@ -12,3 +12,6 @@ block content
       p #[strong Description:] #{peripheral.description}
       p #[strong Price:] $#{peripheral.price}
       p #[strong In Stock:] #{peripheral.amount}
+    
+    button.button.is-danger.mr-5
+      a.has-text-light(href='/catalog/'+peripheral.url+'/delete') Delete Peripheral

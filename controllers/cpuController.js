@@ -76,13 +76,28 @@ exports.cpu_create_post = [
 ];
 
 // Display cpu delete form on GET.
-exports.cpu_delete_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: cpu delete GET');
+exports.cpu_delete_get = function(req, res, next) {
+
+  Cpu.findById(req.params.id, function(err, results) {
+    if (err) { return next(err); }
+    if (results==null) { // No results.
+        res.redirect('/catalog/cpus');
+    }
+      // Successful, so render.
+      res.render('cpu_delete', { title: 'Delete CPU', cpu: results } );
+  });
+
 };
 
 // Handle cpu delete on POST.
-exports.cpu_delete_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: cpu delete POST');
+exports.cpu_delete_post = function(req, res, next) {
+
+  //Delete object and redirect to the list of cpus.
+  Cpu.findByIdAndRemove(req.body.cpuid, function deleteCpu(err) {
+      if (err) { return next(err); }
+      // Success - go to cpu list
+      res.redirect('/catalog/cpus')
+  })
 };
 
 // Display cpu update form on GET.

@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  div.container
+    section(class='hero is-dark is-danger') 
+      div.hero-body
+        div.container
+          h1.title.has-text-black Do you really want to delete this power supply from inventory list?
+          br
+          h3.subtitle.has-text-black There is currently #[strong #{powerSupply.amount}] in stock.
+
+    div.card.bigCard.my-2.px-5.py-2.has-background-danger
+      p #[strong #{powerSupply.manufacturer} #{powerSupply.name}]
+      p #[strong #{powerSupply.type}]
+      p #[strong Price:] $ #{powerSupply.price} 
+      p #[strong Color:] #{powerSupply.color}
+      p #[strong In Stock:] #{powerSupply.amount}
+    
+    form(method='POST' action='')
+      div.form-group
+        input#powerSupplyid.form-control(type='hidden',name='powerSupplyid', required='true', value=powerSupply._id )
+
+      button.button.is-danger(type='submit') Delete

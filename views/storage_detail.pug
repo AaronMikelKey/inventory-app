@@ -12,3 +12,6 @@ block content
       p #[strong Type:] #{storage.type} 
       p #[strong Price:] $#{storage.price}
       p #[strong In Stock:] #{storage.amount}
+    
+    button.button.is-danger.mr-5
+      a.has-text-light(href='/catalog/'+storage.url+'/delete') Delete Storage

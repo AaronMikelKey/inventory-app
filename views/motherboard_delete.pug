@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  div.container
+    section(class='hero is-dark is-danger') 
+      div.hero-body
+        div.container
+          h1.title.has-text-black Do you really want to delete this motherboard from inventory list?
+          br
+          h3.subtitle.has-text-black There is currently #[strong #{motherboard.amount}] in stock.
+
+    div.card.bigCard.my-2.px-5.py-2.has-background-danger
+      p #[strong #{motherboard.manufacturer} #{motherboard.name}]
+      p #[strong #{motherboard.type}]
+      p #[strong Price:] $ #{motherboard.price} 
+      p #[strong Color:] #{motherboard.color}
+      p #[strong In Stock:] #{motherboard.amount}
+    
+    form(method='POST' action='')
+      div.form-group
+        input#motherboardid.form-control(type='hidden',name='motherboardid', required='true', value=motherboard._id )
+
+      button.button.is-danger(type='submit') Delete

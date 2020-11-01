@@ -78,13 +78,28 @@ exports.storage_create_post = [
 ];
 
 // Display storage delete form on GET.
-exports.storage_delete_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: storage delete GET');
+exports.storage_delete_get = function(req, res, next) {
+
+  Storage.findById(req.params.id, function(err, results) {
+    if (err) { return next(err); }
+    if (results==null) { // No results.
+        res.redirect('/catalog/storages');
+    }
+      // Successful, so render.
+      res.render('storage_delete', { title: 'Delete Storage', storage: results } );
+  });
+
 };
 
 // Handle storage delete on POST.
-exports.storage_delete_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: storage delete POST');
+exports.storage_delete_post = function(req, res, next) {
+
+  //Delete object and redirect to the list of storages.
+  Storage.findByIdAndRemove(req.body.storageid, function deleteStorage(err) {
+      if (err) { return next(err); }
+      // Success - go to storage list
+      res.redirect('/catalog/storages')
+  })
 };
 
 // Display storage update form on GET.

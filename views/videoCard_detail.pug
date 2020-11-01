@@ -12,3 +12,6 @@ block content
       p #[strong Memory:] #{videoCard.memory}
       p #[strong Price:] $#{videoCard.price}
       p #[strong In Stock:] #{videoCard.amount}
+    
+    button.button.is-danger.mr-5
+      a.has-text-light(href='/catalog/'+videoCard.url+'/delete') Delete Video Card

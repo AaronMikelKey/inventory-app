@@ -13,3 +13,6 @@ block content
       p #[strong Color:] #{memory.color}
       p #[strong Price:] $#{memory.price}
       p #[strong In stock:] #{memory.amount}
+    
+    button.button.is-danger.mr-5
+      a.has-text-light(href='/catalog/'+memory.url+'/delete') Delete Memory

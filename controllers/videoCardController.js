@@ -77,13 +77,28 @@ exports.videoCard_create_post = [
 ];
 
 // Display videoCard delete form on GET.
-exports.videoCard_delete_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: videoCard delete GET');
+exports.videoCard_delete_get = function(req, res, next) {
+
+  VideoCard.findById(req.params.id, function(err, results) {
+    if (err) { return next(err); }
+    if (results==null) { // No results.
+        res.redirect('/catalog/videoCards');
+    }
+      // Successful, so render.
+      res.render('videoCard_delete', { title: 'Delete Video Card', videoCard: results } );
+  });
+
 };
 
 // Handle videoCard delete on POST.
-exports.videoCard_delete_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: videoCard delete POST');
+exports.videoCard_delete_post = function(req, res, next) {
+
+  //Delete object and redirect to the list of videoCards.
+  VideoCard.findByIdAndRemove(req.body.videoCardid, function deleteVideoCard(err) {
+      if (err) { return next(err); }
+      // Success - go to videoCard list
+      res.redirect('/catalog/videoCards')
+  })
 };
 
 // Display videoCard update form on GET.
