@@ -1,16 +1,64 @@
-const { async } = require('async');
+const async = require('async');
 var Case = require('../models/case');
+var Cpu = require('../models/cpu');
+var Memory = require('../models/memory');
+var Motherboard = require('../models/motherboard');
+var Peripheral = require('../models/peripheral');
+var PowerSupply = require('../models/powerSupply');
+var Storage = require('../models/storage');
+var VideoCard = require('../models/videoCard');
 var _component_list = { cases:'Case', cpus: 'CPU', memorys: 'Memory', motherboards:'Motherboard', peripherals:'Peripheral', powersupplys: 'Power Supply', storages: 'Storage', videocards:'Video Card'};
 const { body,validationResult } = require('express-validator');
+const { count } = require('../models/case');
 const type = ['ATX Full Tower','ATX Mid Tower', 'ATX Mini Tower', 'HTPC', 'Mini ATX Desktop'];
 const color = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple', 'Black', 'White'];
 
-exports.index = function(req, res) {
-  res.render('index', { 
-    title: 'PC Parts Inventory',
-    component_list: 
-      _component_list,
-    });
+exports.index = function(req, res, next) {
+
+  async.parallel({
+    case_count: function(callback) {
+      Case.find({}, 'amount')
+      .exec(callback)
+    },
+    cpu_count: function(callback) {
+      Cpu.find({}, 'amount')
+      .exec(callback)
+    },
+    memory_count: function(callback) {
+      Memory.find({}, 'amount')
+      .exec(callback)
+    },
+    motherboard_count: function(callback) {
+      Motherboard.find({}, 'amount')
+      .exec(callback)
+    },
+    peripheral_count: function(callback) {
+      Peripheral.find({}, 'type amount')
+      .exec(callback)
+    },
+    powerSupply_count: function(callback) {
+      PowerSupply.find({}, 'amount')
+      .exec(callback)
+    },
+    storage_count: function(callback) {
+      Storage.find({}, 'amount')
+      .exec(callback)
+    },
+    videoCard_count: function(callback) {
+      VideoCard.find({}, 'amount')
+      .exec(callback)
+    }
+  }, function(err, results) {
+    res.render('index', { 
+      title: 'PC Parts Inventory',
+      component_list: 
+        _component_list,
+      error: err,
+      counts: results
+      });
+  })
+
+  
 }
 
 //Display list of all cases.
@@ -88,13 +136,28 @@ exports.case_create_post = [
 ];
 
 // Display case delete form on GET.
-exports.case_delete_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: case delete GET');
+exports.case_delete_get = function(req, res, next) {
+
+  Case.findById(req.params.id, function(err, results) {
+    if (err) { return next(err); }
+    if (results==null) { // No results.
+        res.redirect('/catalog/cases');
+    }
+      // Successful, so render.
+      res.render('case_delete', { title: 'Delete Case', caseName: results } );
+  });
+
 };
 
 // Handle case delete on POST.
-exports.case_delete_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: case delete POST');
+exports.case_delete_post = function(req, res, next) {
+
+          //Delete object and redirect to the list of cases.
+          Case.findByIdAndRemove(req.body.caseid, function deleteCase(err) {
+              if (err) { return next(err); }
+              // Success - go to case list
+              res.redirect('/catalog/cases')
+          })
 };
 
 // Display case update form on GET.

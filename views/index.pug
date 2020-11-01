@@ -6,3 +6,103 @@ block content
       div.hero-body
         div.container
           h1.title Welcome to #{title}
+
+    section.mx-5.my-2
+      if error
+        h1.title Error getting inventory list
+      else
+        h1.title Inventory List
+
+        p #[strong Case Types: ] !{counts.case_count.length}
+        -var caseTotal = 0;
+        -for(let i=0;i<counts.case_count.length;i++)
+          -caseTotal += counts.case_count[i].amount
+        p.mx-2 #[strong Total: ] #{caseTotal}
+        br
+        p #[strong CPUs Types: ] !{counts.cpu_count.length}
+        -var cpuTotal = 0;
+        -for(let i=0;i<counts.cpu_count.length;i++)
+          -cpuTotal += counts.cpu_count[i].amount
+        p.mx-2 #[strong Total: ] #{cpuTotal}
+        br
+        p #[strong Memory Types: ] !{counts.memory_count.length}
+        -var memoryTotal = 0;
+        -for(let i=0;i<counts.memory_count.length;i++)
+          -memoryTotal += counts.memory_count[i].amount
+        p.mx-2 #[strong Total: ] #{memoryTotal}
+        br
+        p #[strong Motherboards Types: ] !{counts.motherboard_count.length}
+        -var motherboardTotal = 0;
+        -for(let i=0;i<counts.motherboard_count.length;i++)
+          -motherboardTotal += counts.motherboard_count[i].amount
+        p.mx-2 #[strong Total: ] #{motherboardTotal}
+        br
+        p #[strong Peripherals: ] !{counts.peripheral_count.length}
+        p.mx-2 #[strong Monitors:]
+          -let monitorTotal = 0;
+          -let monitorCount = 0;
+          -for (let i=0;i<counts.peripheral_count.length;i++)
+            -if (counts.peripheral_count[i].type === 'Monitor')
+              -monitorCount += 1;
+              -monitorTotal += counts.peripheral_count[i].amount
+        p.mx-3 Monitor Types: !{monitorCount}
+        p.mx-3 Monitor Total: !{monitorTotal}
+        br
+        p.mx-2 #[strong Keyboards:]
+        -let keyboardTotal = 0;
+        -let keyboardCount = 0;
+          -for (let i=0;i<counts.peripheral_count.length;i++)
+            -if (counts.peripheral_count[i].type === 'Keyboard')
+              -keyboardCount += 1;
+              -keyboardTotal += counts.peripheral_count[i].amount
+        p.mx-3 Keyboard Types: !{keyboardCount}
+        p.mx-3 Keyboard Total: !{keyboardTotal}
+        br
+        p.mx-2 #[strong Mice:]
+        -let mouseTotal = 0;
+        -let mouseCount = 0;
+          -for (let i=0;i<counts.peripheral_count.length;i++)
+            -if (counts.peripheral_count[i].type === 'Mouse')
+              -mouseCount += 1;
+              -mouseTotal += counts.peripheral_count[i].amount
+        p.mx-3 Mouse Types: !{mouseCount}
+        p.mx-3 Mice Total: !{mouseTotal}
+        br
+        p.mx-2 #[strong Headphones:]
+        -let headphoneTotal = 0;
+        -let headphoneCount = 0;
+          -for (let i=0;i<counts.peripheral_count.length;i++)
+            -if (counts.peripheral_count[i].type === 'Headphones')
+              -headphoneCount += 1;
+              -headphoneTotal += counts.peripheral_count[i].amount
+        p.mx-3 Headphone Types: !{headphoneCount}
+        p.mx-3 Headphones Total: !{headphoneTotal}
+        br
+        p.mx-2 #[strong Speakers:]
+        -let speakerTotal = 0;
+        -let speakerCount = 0;
+          -for (let i=0;i<counts.peripheral_count.length;i++)
+            -if (counts.peripheral_count[i].type === 'Speakers')
+              -speakerCount += 1;
+              -speakerTotal += counts.peripheral_count[i].amount
+        p.mx-3 Speaker Types: !{speakerCount}
+        p.mx-3 Speakers Total: !{speakerTotal}
+        br
+
+        p #[strong Power Supplys Types: ] !{counts.powerSupply_count.length}
+        -var powerSupplyTotal = 0;
+        -for(let i=0;i<counts.powerSupply_count.length;i++)
+          -powerSupplyTotal += counts.powerSupply_count[i].amount
+        p.mx-2 #[strong Total: ] #{powerSupplyTotal}
+        br
+        p #[strong Storage Types: ] !{counts.storage_count.length}
+        -var storageTotal = 0;
+        -for(let i=0;i<counts.storage_count.length;i++)
+          -storageTotal += counts.storage_count[i].amount
+        p.mx-2 #[strong Total: ] #{storageTotal}
+        br
+        p #[strong Video Cards Types: ] !{counts.videoCard_count.length}
+        -var videoCardTotal = 0;
+        -for(let i=0;i<counts.videoCard_count.length;i++)
+          -videoCardTotal += counts.videoCard_count[i].amount
+        p.mx-2 #[strong Total: ] #{videoCardTotal}

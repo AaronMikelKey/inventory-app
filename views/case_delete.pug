@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  div.container
+    section(class='hero is-dark is-danger') 
+      div.hero-body
+        div.container
+          h1.title.has-text-black Do you really want to delete this case from inventory list?
+          br
+          h3.subtitle.has-text-black There is currently #[strong #{caseName.amount}] in stock.
+
+    div.card.bigCard.my-2.px-5.py-2.has-background-danger
+      p #[strong #{caseName.manufacturer} #{caseName.name}]
+      p #[strong #{caseName.type}]
+      p #[strong Price:] $ #{caseName.price} 
+      p #[strong Color:] #{caseName.color}
+      p #[strong In Stock:] #{caseName.amount}
+    
+    form(method='POST' action='')
+      div.form-group
+        input#caseid.form-control(type='hidden',name='caseid', required='true', value=caseName._id )
+
+      button.button.is-danger(type='submit') Delete
