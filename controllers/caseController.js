@@ -161,11 +161,65 @@ exports.case_delete_post = function(req, res, next) {
 };
 
 // Display case update form on GET.
-exports.case_update_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: case update GET');
+exports.case_update_get = function(req, res, next) {
+
+  Case.findById(req.params.id, function(err, caseName) {
+      if (err) { return next(err); }
+      if (caseName==null) { // No results.
+          var err = new Error('Case not found');
+          err.status = 404;
+          return next(err);
+      }
+      // Success.
+      res.render('case_form', { title: 'Update Case', newCase: caseName, types: type, colors: color });
+  });
+
 };
 
-// Handle case update on POST.
-exports.case_update_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: case update POST');
-};
+// Handle Case update on POST.
+exports.case_update_post = [
+ 
+  // Validate and sanitze the name field.
+  body('name', 'Case name required').trim().isLength({ min: 1 }).escape(),
+  body('manufacturer', 'Manufacturer is required').trim().isLength({ min: 1 }).escape(),
+  body('type.*', 'Type is required').isLength({ min: 1 }).escape(),
+  body('color.*', 'Color is required').isLength({ min: 1 }).escape(),
+  body('price', 'Price is required').isDecimal({decimal_digits: '2'}).escape(),
+  body('amount', 'Amount is required').isInt({ min: 1 }).escape(),
+  
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+
+      // Extract the validation errors from a request .
+      const errors = validationResult(req);
+
+  // Create a case object with escaped and trimmed data (and the old id!)
+      var caseName = new Case(
+        {
+        name: req.body.name,
+        manufacturer: req.body.manufacturer,
+        type: req.body.type,
+        color: req.body.color,
+        price: req.body.price,
+        amount: req.body.amount,
+        _id: req.params.id
+        }
+      );
+
+
+      if (!errors.isEmpty()) {
+          // There are errors. Render the form again with sanitized values and error messages.
+          res.render('case_form', { title: 'Update Case', newCase: caseName, types: type, colors: color, errors: errors.array()});
+      return;
+      }
+      else {
+          // Data from form is valid. Update the record.
+          Case.findByIdAndUpdate(req.params.id, caseName, {}, function (err,thecaseName) {
+              if (err) { return next(err); }
+                 // Successful - redirect to case detail page.
+                 res.redirect('/catalog/case/'+ thecaseName._id);
+              });
+      }
+  }
+];

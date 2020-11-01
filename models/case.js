@@ -21,19 +21,5 @@ CaseSchema
   return 'case/' + this._id;
 });
 
-//Getter for price, which is stored in cents
-CaseSchema
-.path('price')
-.get(function(num) {
-  return (num/100).toFixed(2);
-});
-
-//Setter for price
-CaseSchema
-.path('price')
-.set(function(num) {
-  return num * 100;
-});
-
 //Export model
 module.exports = mongoose.model('Case', CaseSchema);
