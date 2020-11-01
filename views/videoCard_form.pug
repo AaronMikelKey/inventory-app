@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  div.container
+    section(class='hero is-dark is-primary') 
+      div.hero-body
+        div.container
+          h1.title.has-text-black #{title}
+    div.field
+      form(method='POST' action='')
+        label.label(for='name') Name:
+        div.control
+          input.input#name(type='text' placeholder='Video Card Name' name='name' required='true' value=(undefined===newVideoCard ? '' : newVideoCard.name))
+        label.label(for='manufacturer') Manufacturer:
+        div.control
+          input.input#manufacturer(type='text' placeholder='Manufacturer' name='manufacturer' required='true' value=(undefined===newVideoCard ? '' : newVideoCard.manufacturer))
+        label.label(for='chipset') Chipset:
+        div.control
+          input.input#chipset(type='text' placeholder='Chipset' name='chipset' required='true' value=(undefined===newVideoCard ? '' : newVideoCard.chipset))
+        label.label(for='memory') Memory:
+        div.control
+          div.select
+            select#memory(type='select' placeholder='Select Memory' name='memory' required='true')
+              - memorys.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+              for item in memorys
+                if newVideoCard
+                  option(value=newVideoCard._id selected=(newVideoCard._id.toString()===newVideoCard._id.toString() ? 'selected' : false)) #{newVideoCard.memory}
+                else
+                  option(value=item) #{item}
+        label.label(for='price') Price:
+        div.control
+          input.input(type='number', name='price' placeholder='0.00' step='0.01' required='true' value=(undefined===newVideoCard ? '' : newVideoCard.price))
+        label.label(for='amount') Amount:
+        div.control
+          input.input(type='number', name='amount' placeholder='1' required='true' value=(undefined===newVideoCard ? '' : newVideoCard.amount))
+        button.button.is-link(type='submit') Submit
+    
+    if errors
+      ul
+        for error in errors
+          li!=error.msg

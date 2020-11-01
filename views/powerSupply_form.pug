@@ -27,7 +27,7 @@ block content
                   option(value=newPowerSupply._id selected=(newPowerSupply._id.toString()===newPowerSupply._id.toString() ? 'selected' : false)) #{newPowerSupply.color}
                 else
                   option(value=item) #{item}
-        label.label(for='type') Color:
+        label.label(for='color') Color:
         div.control
           div.select
             select#modular(type='select' placeholder='Modular' name='modular' required='true')

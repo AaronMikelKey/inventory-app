@@ -66,7 +66,7 @@ exports.powerSupply_create_post = [
 
     if (!errors.isEmpty()) {
       //Errors. Re-render form with sanitized values/errors
-      res.render('powerSupply_form', {title: 'Add new Power Supply', newMemory: newMemory, modulars: modular, colors: color, errors: errors.array() });
+      res.render('powerSupply_form', {title: 'Add new Power Supply', newPowerSupply: newPowerSupply, modulars: modular, colors: color, errors: errors.array() });
     }
     else {
       //Data from form is valid, save PowerSupply
