@@ -101,11 +101,65 @@ exports.cpu_delete_post = function(req, res, next) {
 };
 
 // Display cpu update form on GET.
-exports.cpu_update_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: cpu update GET');
+exports.cpu_update_get = function(req, res, next) {
+
+  Cpu.findById(req.params.id, function(err, cpu) {
+      if (err) { return next(err); }
+      if (cpu==null) { // No results.
+          var err = new Error('CPU not found');
+          err.status = 404;
+          return next(err);
+      }
+      // Success.
+      res.render('cpu_form', { title: 'Update CPU', newCpu: cpu });
+  });
+
 };
 
 // Handle cpu update on POST.
-exports.cpu_update_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: cpu update POST');
-};
+exports.cpu_update_post = [
+ 
+  // Validate and sanitze the name field.
+  body('name', 'Case name required').trim().isLength({ min: 1 }).escape(),
+  body('manufacturer', 'Manufacturer is required').trim().isLength({ min: 1 }).escape(),
+  body('coreCount', 'Core Count is required').isInt().isLength({ min: 1 }).escape(),
+  body('coreClock', 'Core Clock is required').isDecimal({ decimal_digits: '0,2' }).escape(),
+  body('price', 'Price is required').isDecimal({decimal_digits: '2'}).escape(),
+  body('amount', 'Amount is required').isInt({ min: 1 }).escape(),
+  
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+
+      // Extract the validation errors from a request .
+      const errors = validationResult(req);
+
+  // Create a cpu object with escaped and trimmed data (and the old id!)
+      var newCpu = new Cpu(
+        {
+        name: req.body.name,
+        manufacturer: req.body.manufacturer,
+        coreCount: req.body.coreCount,
+        coreClock: req.body.coreClock,
+        price: req.body.price,
+        amount: req.body.amount,
+        _id: req.params.id
+        }
+      );
+
+
+      if (!errors.isEmpty()) {
+          // There are errors. Render the form again with sanitized values and error messages.
+          res.render('cpu_form', { title: 'Update CPU', newCpu: newCpu, errors: errors.array()});
+      return;
+      }
+      else {
+          // Data from form is valid. Update the record.
+          Cpu.findByIdAndUpdate(req.params.id, newCpu, {}, function (err,theNewCpu) {
+              if (err) { return next(err); }
+                 // Successful - redirect to cpu detail page.
+                 res.redirect('/catalog/cpu/'+ theNewCpu._id);
+              });
+      }
+  }
+];

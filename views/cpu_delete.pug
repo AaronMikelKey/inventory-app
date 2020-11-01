@@ -5,15 +5,15 @@ block content
     section(class='hero is-dark is-danger') 
       div.hero-body
         div.container
-          h1.title.has-text-black Do you really want to delete this cpu from inventory list?
+          h1.title.has-text-black Do you really want to delete #{cpu.manufacturer} #{cpu.name} from inventory list?
           br
           h3.subtitle.has-text-black There is currently #[strong #{cpu.amount}] in stock.
 
     div.card.bigCard.my-2.px-5.py-2.has-background-danger
       p #[strong #{cpu.manufacturer} #{cpu.name}]
-      p #[strong #{cpu.type}]
-      p #[strong Price:] $ #{cpu.price} 
-      p #[strong Color:] #{cpu.color}
+      p #[strong Cores:] #{cpu.coreCount} 
+      p #[strong Clock:] #{cpu.coreClock} GHz
+      p #[strong Price:] $#{cpu.price}
       p #[strong In Stock:] #{cpu.amount}
     
     form(method='POST' action='')

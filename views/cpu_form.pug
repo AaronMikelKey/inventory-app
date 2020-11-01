@@ -10,22 +10,22 @@ block content
     form.field(method='POST' action='')
       label.label(for='name') Name:
       div.control
-        input.input#name(type='text' placeholder='CPU Name' name='name' required='true' value=(undefined===newCase ? '' : newCase.name))
+        input.input#name(type='text' placeholder='CPU Name' name='name' required='true' value=(undefined===newCpu ? '' : newCpu.name))
       label.label(for='manufacturer') Manufacturer:
       div.control
-        input.input#manufacturer(type='text' placeholder='Manufacturer' name='manufacturer' required='true' value=(undefined===newCase ? '' : newCase.manufacturer))
+        input.input#manufacturer(type='text' placeholder='Manufacturer' name='manufacturer' required='true' value=(undefined===newCpu ? '' : newCpu.manufacturer))
       label.label(for='coreCount') Core Count:
       div.control 
-        input.input(type='number', name='coreCount' placeholder='1' required='true' value=(undefined===newCase ? '' : newCase.coreCount))
+        input.input(type='number', name='coreCount' placeholder='1' required='true' value=(undefined===newCpu ? '' : newCpu.coreCount))
       label.label(for='coreClock') Core Clock:
       div.control
-        input.input(type='number', name='coreClock' placeholder='1' step='0.10' required='true' value=(undefined===newCase ? '' : newCase.coreClock))
+        input.input(type='number', name='coreClock' placeholder='1' step='0.10' required='true' value=(undefined===newCpu ? '' : newCpu.coreClock))
       label.label(for='price') Price:
       div.control
-        input.input(type='number', name='price' placeholder='0.00' step='0.01' required='true' value=(undefined===newCase ? '' : newCase.price))
+        input.input(type='number', name='price' placeholder='0.00' step='0.01' required='true' value=(undefined===newCpu ? '' : newCpu.price))
       label.label(for='amount') Amount:
       div.control
-        input.input(type='number', name='amount' placeholder='1' required='true' value=(undefined===newCase ? '' : newCase.amount))
+        input.input(type='number', name='amount' placeholder='1' required='true' value=(undefined===newCpu ? '' : newCpu.amount))
       button.button.is-link(type='submit') Submit
     
     if errors
