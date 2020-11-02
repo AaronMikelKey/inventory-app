@@ -21,19 +21,5 @@ StorageSchema
   return 'storage/' + this._id;
 });
 
-//Getter for price, which is stored in cents
-StorageSchema
-.path('price')
-.get(function(num) {
-  return (num / 100).toFixed(2);
-});
-
-//Setter for price
-StorageSchema
-.path('price')
-.set(function(num) {
-  return num * 100;
-});
-
 //Export model
 module.exports = mongoose.model('Storage', StorageSchema);

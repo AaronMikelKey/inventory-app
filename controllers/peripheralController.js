@@ -102,11 +102,65 @@ exports.peripheral_delete_post = function(req, res, next) {
 };
 
 // Display peripheral update form on GET.
-exports.peripheral_update_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: peripheral update GET');
+exports.peripheral_update_get = function(req, res, next) {
+
+  Peripheral.findById(req.params.id, function(err, results) {
+      if (err) { return next(err); }
+      if (results==null) { // No results.
+          var err = new Error('Peripheral not found');
+          err.status = 404;
+          return next(err);
+      }
+      // Success.
+      res.render('peripheral_form', { title: 'Update Peripheral', newPeripheral: results, types: type });
+  });
+
 };
 
 // Handle peripheral update on POST.
-exports.peripheral_update_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: peripheral update POST');
-};
+exports.peripheral_update_post = [
+ 
+  // Validate and sanitze the name field.
+  body('name', 'Peripheral name required').trim().isLength({ min: 1 }).escape(),
+  body('manufacturer', 'Manufacturer is required').trim().isLength({ min: 1 }).escape(),
+  body('type.*', 'Type is required').isLength({ min: 1 }).escape(),
+  body('description.*').optional().isLength({ max: 150 }).escape(),
+  body('price', 'Price is required').isDecimal({decimal_digits: '2'}).escape(),
+  body('amount', 'Amount is required').isInt({ min: 1 }).escape(),
+  
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+
+      // Extract the validation errors from a request .
+      const errors = validationResult(req);
+
+  // Create a peripheral object with escaped and trimmed data (and the old id!)
+      var newPeripheral = new Peripheral(
+        {
+        name: req.body.name,
+        manufacturer: req.body.manufacturer,
+        type: req.body.type,
+        description: req.body.description,
+        price: req.body.price,
+        amount: req.body.amount,
+        _id: req.params.id
+        }
+      );
+
+
+      if (!errors.isEmpty()) {
+          // There are errors. Render the form again with sanitized values and error messages.
+          res.render('peripheral_form', { title: 'Update Peripheral', newPeripheral: newPeripheral, types: type, errors: errors.array()});
+      return;
+      }
+      else {
+          // Data from form is valid. Update the record.
+          Peripheral.findByIdAndUpdate(req.params.id, newPeripheral, {}, function (err,theNewPeripheral) {
+              if (err) { return next(err); }
+                 // Successful - redirect to peripheral detail page.
+                 res.redirect('/catalog/peripheral/'+ theNewPeripheral._id);
+              });
+      }
+  }
+];

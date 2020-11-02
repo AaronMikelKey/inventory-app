@@ -24,17 +24,17 @@ block content
               - colors.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
               for item in colors
                 if newPowerSupply
-                  option(value=newPowerSupply._id selected=(newPowerSupply._id.toString()===newPowerSupply._id.toString() ? 'selected' : false)) #{newPowerSupply.color}
+                  option(value=item selected=(newPowerSupply.color==item) ? 'selected' : false) #{item}
                 else
                   option(value=item) #{item}
-        label.label(for='color') Color:
+        label.label(for='modular') Modular:
         div.control
           div.select
             select#modular(type='select' placeholder='Modular' name='modular' required='true')
               - modulars.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
               for item in modulars
                 if newPowerSupply
-                  option(value=newPowerSupply._id selected=(newPowerSupply._id.toString()===newPowerSupply._id.toString() ? 'selected' : false)) #{newPowerSupply.modular}
+                  option(value=item selected=(newPowerSupply.modular==item) ? 'selected' : false) #{item}
                 else
                   option(value=item) #{item}
         label.label(for='price') Price:

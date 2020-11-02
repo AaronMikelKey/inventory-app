@@ -16,7 +16,7 @@ block content
             p #[strong Wattage:] #{powerSupply.wattage}
             p #[strong Modular?] #{powerSupply.modular} 
             p #[strong Color:] #{powerSupply.color}
-            p #[strong Price:] $#{powerSupply.price}
+            p #[strong Price:] $#{powerSupply.price.toFixed(2)}
             p #[strong In Stock:] #{powerSupply.amount}
       else
         li There are no Power Supplys.

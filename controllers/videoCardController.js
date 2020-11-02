@@ -1,6 +1,6 @@
 var VideoCard = require('../models/videoCard');
 const { body,validationResult } = require('express-validator');
-memory = ['1GB','2GB', '3GB', '4GB', '5GB', '6GB', '8GB', '10GB', '16GB'];
+const memory = ['1GB','2GB', '3GB', '4GB', '5GB', '6GB', '8GB', '10GB', '16GB'];
 
 //Display list of all videoCards.
 exports.videoCard_list = function(req, res, next) {
@@ -102,11 +102,65 @@ exports.videoCard_delete_post = function(req, res, next) {
 };
 
 // Display videoCard update form on GET.
-exports.videoCard_update_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: videoCard update GET');
+exports.videoCard_update_get = function(req, res, next) {
+
+  VideoCard.findById(req.params.id, function(err, results) {
+      if (err) { return next(err); }
+      if (results==null) { // No results.
+          var err = new Error('Video Card not found');
+          err.status = 404;
+          return next(err);
+      }
+      // Success.
+      res.render('videoCard_form', { title: 'Update Video Card', newVideoCard: results, memorys: memory });
+  });
+
 };
 
 // Handle videoCard update on POST.
-exports.videoCard_update_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: videoCard update POST');
-};
+exports.videoCard_update_post = [
+ 
+  // Validate and sanitze the name field.
+  body('name', 'Memory name required').trim().isLength({ min: 1 }).escape(),
+  body('manufacturer', 'Manufacturer is required').trim().isLength({ min: 1 }).escape(),
+  body('memory.*', 'Memory is required').isLength({ min: 1 }).escape(),
+  body('chipset', 'Chipset is required').trim().isLength({ min: 1 }).escape(),
+  body('price', 'Price is required').isDecimal({decimal_digits: '2'}).escape(),
+  body('amount', 'Amount is required').isInt({ min: 1 }).escape(),
+  
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+
+      // Extract the validation errors from a request .
+      const errors = validationResult(req);
+
+  // Create a videoCard object with escaped and trimmed data (and the old id!)
+    var newVideoCard = new VideoCard(
+      {
+        name: req.body.name,
+        manufacturer: req.body.manufacturer,
+        memory: req.body.memory,
+        chipset: req.body.chipset,
+        price: req.body.price,
+        amount: req.body.amount,
+        _id: req.params.id
+        }
+      );
+
+
+      if (!errors.isEmpty()) {
+          // There are errors. Render the form again with sanitized values and error messages.
+          res.render('videoCard_form', { title: 'Update Video Card', newVideoCard: newVideoCard, memorys: memory, errors: errors.array()});
+      return;
+      }
+      else {
+          // Data from form is valid. Update the record.
+          VideoCard.findByIdAndUpdate(req.params.id, newVideoCard, {}, function (err,theNewVideoCard) {
+              if (err) { return next(err); }
+                 // Successful - redirect to video card detail page.
+                 res.redirect('/catalog/videocard/'+ theNewVideoCard._id);
+              });
+      }
+  }
+];

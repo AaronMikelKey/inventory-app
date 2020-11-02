@@ -21,7 +21,7 @@ block content
               - formFactors.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
               for item in formFactors
                 if newMotherboard
-                  option(value=newMotherboard._id selected=(newMotherboard._id.toString()===newMotherboard._id.toString() ? 'selected' : false)) #{newMotherboard.formFactor}
+                  option(value=item selected=(newMotherboard.formFactor==item) ? 'selected' : false) #{item}
                 else
                   option(value=item) #{item}
         label.label(for='memory') Memory Type
@@ -31,7 +31,7 @@ block content
               - memorys.sort(function(a, b) {let textA = parseInt(a.replace('GB', '')); let textB = parseInt(b.replace('GB', '')); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
               for item in memorys
                 if newMotherboard
-                  option(value=newMotherboard._id selected=(newMotherboard._id.toString()===newMotherboard._id.toString() ? 'selected' : false)) #{newMotherboard.color}
+                  option(value=item selected=(newMotherboard.memory==item) ? 'selected' : false) #{item}
                 else
                   option(value=item) #{item}
         label.label(for='price') Price:

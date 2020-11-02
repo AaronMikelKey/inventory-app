@@ -105,11 +105,67 @@ exports.powerSupply_delete_post = function(req, res, next) {
 };
 
 // Display powerSupply update form on GET.
-exports.powerSupply_update_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: powerSupply update GET');
+exports.powerSupply_update_get = function(req, res, next) {
+
+  PowerSupply.findById(req.params.id, function(err, results) {
+      if (err) { return next(err); }
+      if (results==null) { // No results.
+          var err = new Error('Power Supply not found');
+          err.status = 404;
+          return next(err);
+      }
+      // Success.
+      res.render('powerSupply_form', { title: 'Update Power Supply', newPowerSupply: results, modulars: modular, colors: color });
+  });
+
 };
 
 // Handle powerSupply update on POST.
-exports.powerSupply_update_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: powerSupply update POST');
-};
+exports.powerSupply_update_post = [
+ 
+  // Validate and sanitze the name field.
+  body('name', 'Power Supply name required').trim().isLength({ min: 1 }).escape(),
+  body('manufacturer', 'Manufacturer is required').trim().isLength({ min: 1 }).escape(),
+  body('modular.*', 'Modular is required').isLength({ min: 1 }).escape(),
+  body('color.*', 'Color is required').isLength({ min: 1 }).escape(),
+  body('wattage', 'Wattage is required').isInt({ min: 10 }).escape(),
+  body('price', 'Price is required').isDecimal({decimal_digits: '2'}).escape(),
+  body('amount', 'Amount is required').isInt({ min: 1 }).escape(),
+  
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+
+      // Extract the validation errors from a request .
+      const errors = validationResult(req);
+
+  // Create a Power Supply object with escaped and trimmed data (and the old id!)
+      var newPowerSupply = new PowerSupply(
+        {
+        name: req.body.name,
+        manufacturer: req.body.manufacturer,
+        modular: req.body.modular,
+        color: req.body.color,
+        wattage: req.body.wattage,
+        price: req.body.price,
+        amount: req.body.amount,
+        _id: req.params.id
+        }
+      );
+
+
+      if (!errors.isEmpty()) {
+          // There are errors. Render the form again with sanitized values and error messages.
+          res.render('powerSupply_form', { title: 'Update Power Supply', newPowerSupply: results, modulars: modular, colors: color, errors: errors.array()});
+      return;
+      }
+      else {
+          // Data from form is valid. Update the record.
+          PowerSupply.findByIdAndUpdate(req.params.id, newPowerSupply, {}, function (err,theNewPowerSupply) {
+              if (err) { return next(err); }
+                 // Successful - redirect to power supply detail page.
+                 res.redirect('/catalog/powersupply/'+ theNewPowerSupply._id);
+              });
+      }
+  }
+];

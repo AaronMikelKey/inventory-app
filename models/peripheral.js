@@ -21,19 +21,5 @@ PeripheralSchema
   return 'peripheral/' + this._id;
 });
 
-//Getter for price, which is stored in cents
-PeripheralSchema
-.path('price')
-.get(function(num) {
-  return (num / 100).toFixed(2);
-});
-
-//Setter for price
-PeripheralSchema
-.path('price')
-.set(function(num) {
-  return num * 100;
-});
-
 //Export model
 module.exports = mongoose.model('Peripheral', PeripheralSchema);

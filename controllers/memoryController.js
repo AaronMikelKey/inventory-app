@@ -106,11 +106,67 @@ exports.memory_delete_post = function(req, res, next) {
 };
 
 // Display memory update form on GET.
-exports.memory_update_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: memory update GET');
+exports.memory_update_get = function(req, res, next) {
+
+  Memory.findById(req.params.id, function(err, results) {
+      if (err) { return next(err); }
+      if (results==null) { // No results.
+          var err = new Error('Memory not found');
+          err.status = 404;
+          return next(err);
+      }
+      // Success.
+      res.render('memory_form', { title: 'Update Memory', newMemory: results, types: type, colors: color, sizes: size });
+  });
+
 };
 
 // Handle memory update on POST.
-exports.memory_update_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: memory update POST');
-};
+exports.memory_update_post = [
+ 
+  // Validate and sanitze the name field.
+  body('name', 'Memory name required').trim().isLength({ min: 1 }).escape(),
+  body('manufacturer', 'Manufacturer is required').trim().isLength({ min: 1 }).escape(),
+  body('type.*', 'Type is required').isLength({ min: 1 }).escape(),
+  body('size', 'Size is required').isLength({ min: 1 }).escape(),
+  body('color.*', 'Color is required').isLength({ min: 1 }).escape(),
+  body('price', 'Price is required').isDecimal({decimal_digits: '2'}).escape(),
+  body('amount', 'Amount is required').isInt({ min: 1 }).escape(),
+  
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+
+      // Extract the validation errors from a request .
+      const errors = validationResult(req);
+
+  // Create a memory object with escaped and trimmed data (and the old id!)
+      var newMemory = new Memory(
+        {
+        name: req.body.name,
+        manufacturer: req.body.manufacturer,
+        type: req.body.type,
+        size: req.body.size,
+        color: req.body.color,
+        price: req.body.price,
+        amount: req.body.amount,
+        _id: req.params.id
+        }
+      );
+
+
+      if (!errors.isEmpty()) {
+          // There are errors. Render the form again with sanitized values and error messages.
+          res.render('memory_form', { title: 'Update Memory', newMemory: newMemory, types: type, colors: color, sizes: size, errors: errors.array()});
+      return;
+      }
+      else {
+          // Data from form is valid. Update the record.
+          Memory.findByIdAndUpdate(req.params.id, newMemory, {}, function (err,theNewMemory) {
+              if (err) { return next(err); }
+                 // Successful - redirect to memory detail page.
+                 res.redirect('/catalog/memory/'+ theNewMemory._id);
+              });
+      }
+  }
+];

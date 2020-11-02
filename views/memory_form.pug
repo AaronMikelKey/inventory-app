@@ -21,7 +21,7 @@ block content
               - types.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
               for item in types
                 if newMemory
-                  option(value=newMemory._id selected=(newMemory._id.toString()===newMemory._id.toString() ? 'selected' : false)) #{newMemory.type}
+                  option(value=item selected=(newMemory.type==item) ? 'selected' : false) #{item}
                 else
                   option(value=item) #{item}
         label.label(for='size') Size (GB)
@@ -31,7 +31,7 @@ block content
               - sizes.sort(function(a, b) {let textA = parseInt(a.replace('GB', '')); let textB = parseInt(b.replace('GB', '')); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
               for item in sizes
                 if newMemory
-                  option(value=newMemory._id selected=(newMemory._id.toString()===newMemory._id.toString() ? 'selected' : false)) #{newMemory.color}
+                  option(value=item selected=(newMemory.size==item) ? 'selected' : false) #{item}
                 else
                   option(value=item) #{item}
         label.label(for='color') Color:
@@ -41,7 +41,7 @@ block content
                 - colors.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
                 for item in colors
                   if newMemory
-                    option(value=newMemory._id selected=(newMemory._id.toString()===newMemory._id.toString() ? 'selected' : false)) #{newMemory.color}
+                    option(value=item selected=(newMemory.color==item) ? 'selected' : false) #{item}
                   else
                     option(value=item) #{item}
         label.label(for='price') Price:

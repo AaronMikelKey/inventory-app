@@ -15,7 +15,7 @@ block content
             a(href=storage.url) #[strong #{storage.manufacturer} #{storage.name}]
             p #[strong Capacity:] #{storage.capacity}
             p #[strong Type:] #{storage.type} 
-            p #[strong Price:] $#{storage.price}
+            p #[strong Price:] $#{storage.price.toFixed(2)}
             p #[strong In Stock:] #{storage.amount}
       else
         li There are no storages.

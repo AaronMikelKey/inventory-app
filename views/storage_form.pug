@@ -21,7 +21,7 @@ block content
               - types.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
               for item in types
                 if newStorage
-                  option(value=newStorage._id selected=(newStorage._id.toString()===newStorage._id.toString() ? 'selected' : false)) #{newStorage.type}
+                  option(value=item selected=(newStorage.type==item) ? 'selected' : false) #{item}
                 else
                   option(value=item) #{item}
         label.label(for='capacity') Capacity:
@@ -31,7 +31,7 @@ block content
               - capacitys.sort(function(a, b) {let textA = parseInt(a.replace('GB', '')); let textB = parseInt(b.replace('GB', '')); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
               for item in capacitys
                 if newStorage
-                  option(value=newStorage._id selected=(newStorage._id.toString()===newStorage._id.toString() ? 'selected' : false)) #{newStorage.capacity}
+                  option(value=item selected=(newStorage.capacity==item) ? 'selected' : false) #{item}
                 else
                   option(value=item) #{item}
         label.label(for='price') Price:

@@ -24,7 +24,7 @@ block content
               - memorys.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
               for item in memorys
                 if newVideoCard
-                  option(value=newVideoCard._id selected=(newVideoCard._id.toString()===newVideoCard._id.toString() ? 'selected' : false)) #{newVideoCard.memory}
+                  option(value=item selected=(newVideoCard.memory==item) ? 'selected' : false) #{item}
                 else
                   option(value=item) #{item}
         label.label(for='price') Price:

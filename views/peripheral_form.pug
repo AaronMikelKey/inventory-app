@@ -21,7 +21,7 @@ block content
               - types.sort(function(a, b) {let textA = a.toUpperCase(); let textB = b.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
               for item in types
                 if newPeripheral
-                  option(value=newPeripheral._id selected=(newPeripheral._id.toString()===newPeripheral._id.toString() ? 'selected' : false)) #{newPeripheral.type}
+                  option(value=item selected=(newPeripheral.type==item) ? 'selected' : false) #{item}
                 else
                   option(value=item) #{item}
         label.label(for='memory') Description

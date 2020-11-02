@@ -103,11 +103,65 @@ exports.motherboard_delete_post = function(req, res, next) {
 };
 
 // Display motherboard update form on GET.
-exports.motherboard_update_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: motherboard update GET');
+exports.motherboard_update_get = function(req, res, next) {
+
+  Motherboard.findById(req.params.id, function(err, results) {
+      if (err) { return next(err); }
+      if (results==null) { // No results.
+          var err = new Error('Motherboard not found');
+          err.status = 404;
+          return next(err);
+      }
+      // Success.
+      res.render('motherboard_form', { title: 'Update Motherboard', newMotherboard: results, formFactors: formFactor, memorys: memory });
+  });
+
 };
 
 // Handle motherboard update on POST.
-exports.motherboard_update_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: motherboard update POST');
-};
+exports.motherboard_update_post = [
+ 
+  // Validate and sanitze the name field.
+  body('name', 'Memory name required').trim().isLength({ min: 1 }).escape(),
+  body('manufacturer', 'Manufacturer is required').trim().isLength({ min: 1 }).escape(),
+  body('formFactor.*', 'Form factor is required').isLength({ min: 1 }).escape(),
+  body('memory.*', 'Memory type is required').isLength({ min: 1 }).escape(),
+  body('price', 'Price is required').isDecimal({decimal_digits: '2'}).escape(),
+  body('amount', 'Amount is required').isInt({ min: 1 }).escape(),
+  
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+
+      // Extract the validation errors from a request .
+      const errors = validationResult(req);
+
+  // Create a motherboard object with escaped and trimmed data (and the old id!)
+      var newMotherboard = new Motherboard(
+        {
+        name: req.body.name,
+        manufacturer: req.body.manufacturer,
+        formFactor: req.body.formFactor,
+        memory: req.body.memory,
+        price: req.body.price,
+        amount: req.body.amount,
+        _id: req.params.id
+        }
+      );
+
+
+      if (!errors.isEmpty()) {
+          // There are errors. Render the form again with sanitized values and error messages.
+          res.render('motherboard_form', { title: 'Update Motherboard', newMotherboard: newMotherboard, formFactors: formFactor, memorys: memory, errors: errors.array()});
+      return;
+      }
+      else {
+          // Data from form is valid. Update the record.
+          Motherboard.findByIdAndUpdate(req.params.id, newMotherboard, {}, function (err,theNewMotherboard) {
+              if (err) { return next(err); }
+                 // Successful - redirect to motherboard detail page.
+                 res.redirect('/catalog/motherboard/'+ theNewMotherboard._id);
+              });
+      }
+  }
+];

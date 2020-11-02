@@ -103,11 +103,65 @@ exports.storage_delete_post = function(req, res, next) {
 };
 
 // Display storage update form on GET.
-exports.storage_update_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: storage update GET');
+exports.storage_update_get = function(req, res, next) {
+
+  Storage.findById(req.params.id, function(err, results) {
+      if (err) { return next(err); }
+      if (results==null) { // No results.
+          var err = new Error('Storage not found');
+          err.status = 404;
+          return next(err);
+      }
+      // Success.
+      res.render('storage_form', { title: 'Update Storage', newStorage: results, types: type, capacitys: capacity });
+  });
+
 };
 
 // Handle storage update on POST.
-exports.storage_update_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: storage update POST');
-};
+exports.storage_update_post = [
+ 
+  // Validate and sanitze the name field.
+  body('name', 'Storage name required').trim().isLength({ min: 1 }).escape(),
+  body('manufacturer', 'Manufacturer is required').trim().isLength({ min: 1 }).escape(),
+  body('type.*', 'Type is required').isLength({ min: 1 }).escape(),
+  body('capacity.*', 'Capacity is required').isLength({ min: 1 }).escape(),
+  body('price', 'Price is required').isDecimal({decimal_digits: '2'}).escape(),
+  body('amount', 'Amount is required').isInt({ min: 1 }).escape(),
+  
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+
+      // Extract the validation errors from a request .
+      const errors = validationResult(req);
+
+  // Create a storage object with escaped and trimmed data (and the old id!)
+      var newStorage = new Storage(
+        {
+        name: req.body.name,
+        manufacturer: req.body.manufacturer,
+        type: req.body.type,
+        capacity: req.body.capacity,
+        price: req.body.price,
+        amount: req.body.amount,
+        _id: req.params.id
+        }
+      );
+
+
+      if (!errors.isEmpty()) {
+          // There are errors. Render the form again with sanitized values and error messages.
+          res.render('storage_form', { title: 'Update Storage', newStorage: newStorage, types: type, capacitys: capacity, errors: errors.array()});
+      return;
+      }
+      else {
+          // Data from form is valid. Update the record.
+          Storage.findByIdAndUpdate(req.params.id, newStorage, {}, function (err,theNewStorage) {
+              if (err) { return next(err); }
+                 // Successful - redirect to storage detail page.
+                 res.redirect('/catalog/storage/'+ theNewStorage._id);
+              });
+      }
+  }
+];
