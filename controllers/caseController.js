@@ -9,7 +9,6 @@ var Storage = require('../models/storage');
 var VideoCard = require('../models/videoCard');
 var _component_list = { cases:'Case', cpus: 'CPU', memorys: 'Memory', motherboards:'Motherboard', peripherals:'Peripheral', powersupplys: 'Power Supply', storages: 'Storage', videocards:'Video Card'};
 const { body,validationResult } = require('express-validator');
-const { count } = require('../models/case');
 const type = ['ATX Full Tower','ATX Mid Tower', 'ATX Mini Tower', 'HTPC', 'Mini ATX Desktop'];
 const color = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple', 'Black', 'White'];
 
